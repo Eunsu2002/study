@@ -1,0 +1,8 @@
+
+public class FruitsShop {
+
+	void fruitsFlavor(Fruits fruits) {
+		fruits.select = "apple";
+		fruits.flavor = "sweet";
+	}
+}

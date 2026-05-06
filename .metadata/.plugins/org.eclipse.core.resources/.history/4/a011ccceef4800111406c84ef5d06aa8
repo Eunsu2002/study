@@ -1,0 +1,10 @@
+
+public class Fruits {
+	
+	String flavor;
+	
+	void tasteFlavor() {
+		
+	}
+
+}

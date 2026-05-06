@@ -1,0 +1,18 @@
+
+public class Test {
+
+	public static void main(String[] args) {
+		
+		Guest guest = new Guest();
+		new CoffeeShop().joinMember(guest);
+		System.out.println(guest.userId);
+		
+		
+		Fruits fruits = new Fruits();
+		new FruitsShop().fruitsBuy(fruits);
+		System.out.println(fruits.flavor);
+		System.out.println(fruits.select);
+		
+	}
+	
+}

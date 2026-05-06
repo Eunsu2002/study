@@ -1,0 +1,9 @@
+package fruit;
+
+public class FruitShop {
+	
+	void sell (Guest guest) {
+		guest.buy(new Apple());
+	}
+
+}

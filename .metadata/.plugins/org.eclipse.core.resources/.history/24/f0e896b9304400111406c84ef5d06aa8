@@ -1,0 +1,12 @@
+
+public class Test02 {
+	public static void main(String[] args) {
+		
+		int age = 20;
+		if (age > 19) {
+			System.out.println(1);
+		} else {
+			System.out.println(2);
+		}
+	}
+}

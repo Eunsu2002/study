@@ -1,0 +1,11 @@
+
+public class CoffeeShop {
+
+	//회원가입 기능
+	void joinMember(Guest guest) {
+		//userId 발급하기
+		guest.userId = "777";
+		System.out.println();
+	}
+	
+}
