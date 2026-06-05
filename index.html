@@ -743,11 +743,11 @@
       <div class="nav-section-title">Beginner (2)</div>
       <div class="nav-item" onclick="showTopic('nestedloop', this)">
         <span class="level-dot dot-beginner"></span> Nested Loop
-        <span class="nav-badge">4</span>
+        <span class="nav-badge">3</span>
       </div>
       <div class="nav-item" onclick="showTopic('array', this)">
         <span class="level-dot dot-beginner"></span> Array
-        <span class="nav-badge">5</span>
+        <span class="nav-badge">3</span>
       </div>
     </div>
 
@@ -759,7 +759,7 @@
       </div>
       <div class="nav-item" onclick="showTopic('oop-basic', this)">
         <span class="level-dot dot-basic"></span> this / new / static / Overloading
-        <span class="nav-badge">5</span>
+        <span class="nav-badge">3</span>
       </div>
     </div>
 
@@ -771,15 +771,15 @@
       </div>
       <div class="nav-item" onclick="showTopic('inheritance', this)">
         <span class="level-dot dot-intermediate"></span> 상속 / 추상클래스 / 인터페이스
-        <span class="nav-badge">5</span>
+        <span class="nav-badge">3</span>
       </div>
       <div class="nav-item" onclick="showTopic('polymorphism', this)">
         <span class="level-dot dot-intermediate"></span> 다형성 / instanceof / 패턴매칭
-        <span class="nav-badge">4</span>
+        <span class="nav-badge">3</span>
       </div>
       <div class="nav-item" onclick="showTopic('designpattern', this)">
         <span class="level-dot dot-intermediate"></span> Design Pattern
-        <span class="nav-badge">4</span>
+        <span class="nav-badge">3</span>
       </div>
     </div>
 
@@ -787,15 +787,15 @@
       <div class="nav-section-title">Advanced</div>
       <div class="nav-item" onclick="showTopic('jvm', this)">
         <span class="level-dot dot-advanced"></span> JVM / GC / Class Loader
-        <span class="nav-badge">4</span>
+        <span class="nav-badge">3</span>
       </div>
       <div class="nav-item" onclick="showTopic('string', this)">
         <span class="level-dot dot-advanced"></span> String / StringBuilder / Buffer
-        <span class="nav-badge">4</span>
+        <span class="nav-badge">3</span>
       </div>
       <div class="nav-item" onclick="showTopic('generics', this)">
         <span class="level-dot dot-advanced"></span> Generics / Enum / Annotation
-        <span class="nav-badge">4</span>
+        <span class="nav-badge">3</span>
       </div>
       <div class="nav-item" onclick="showTopic('exception', this)">
         <span class="level-dot dot-advanced"></span> Exception 처리
@@ -803,7 +803,7 @@
       </div>
       <div class="nav-item" onclick="showTopic('collection', this)">
         <span class="level-dot dot-advanced"></span> Collection Framework
-        <span class="nav-badge">5</span>
+        <span class="nav-badge">3</span>
       </div>
       <div class="nav-item" onclick="showTopic('lambda', this)">
         <span class="level-dot dot-advanced"></span> Lambda / Stream / 함수형
@@ -811,7 +811,7 @@
       </div>
       <div class="nav-item" onclick="showTopic('thread', this)">
         <span class="level-dot dot-advanced"></span> Thread / 멀티스레딩
-        <span class="nav-badge">4</span>
+        <span class="nav-badge">3</span>
       </div>
     </div>
 
@@ -2096,7 +2096,1012 @@ System.out.println(result2); <span class="cm">// UNKNOWN</span>`,
 </ul>`
       }
     ]
+  },
+
+  nestedloop: {
+    title: 'Nested Loop (중첩 반복문)',
+    level: 'Beginner',
+    badgeClass: 'badge-beginner',
+    keywords: ['for', 'nested', '2D', 'pattern'],
+    problems: [
+      {
+        title: '구구단 전체 출력 (2~9단)',
+        tags: ['nested for', 'int'],
+        desc: '2단부터 9단까지 전체 구구단을 중첩 반복문으로 출력하세요.',
+        code: `<span class="kw">public static void</span> <span class="fn">printAll</span>() {
+    <span class="cm">// TODO: 바깥 for(단), 안쪽 for(곱)</span>
+}`,
+        answer: `<span class="kw">public static void</span> <span class="fn">printAll</span>() {
+    <span class="kw">for</span> (<span class="kw">int</span> dan = <span class="num">2</span>; dan <= <span class="num">9</span>; dan++) {
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i <= <span class="num">9</span>; i++) {
+            System.out.<span class="fn">printf</span>(<span class="str">"%d x %d = %d%n"</span>, dan, i, dan * i);
+        }
+        System.out.<span class="fn">println</span>(); <span class="cm">// 단 사이 빈 줄</span>
+    }
+}`,
+        output: '2 x 1 = 2\n...\n9 x 9 = 81',
+        explain: `<h4>중첩 반복문 동작</h4>
+<ul>
+  <li>바깥 루프가 1번 돌 때마다 안쪽 루프가 끝까지(여기선 9번) 모두 실행됩니다.</li>
+  <li>총 실행 횟수 = 바깥 횟수 × 안쪽 횟수 = 8 × 9 = 72번</li>
+  <li>바깥 루프 변수(<code>dan</code>)는 안쪽 루프 내내 고정값으로 사용됩니다.</li>
+</ul>`
+      },
+      {
+        title: '별 삼각형 출력',
+        tags: ['nested for', 'pattern'],
+        desc: 'n=5일 때 다음과 같은 직각삼각형을 출력하세요. 1행에 별 1개, 2행에 2개 ... n행에 n개.',
+        code: `<span class="kw">public static void</span> <span class="fn">triangle</span>(<span class="kw">int</span> n) {
+    <span class="cm">// *
+    // **
+    // ***  ...</span>
+}`,
+        answer: `<span class="kw">public static void</span> <span class="fn">triangle</span>(<span class="kw">int</span> n) {
+    <span class="kw">for</span> (<span class="kw">int</span> row = <span class="num">1</span>; row <= n; row++) {
+        <span class="kw">for</span> (<span class="kw">int</span> col = <span class="num">1</span>; col <= row; col++) {
+            System.out.<span class="fn">print</span>(<span class="str">"*"</span>);
+        }
+        System.out.<span class="fn">println</span>();
+    }
+}`,
+        output: '*\n**\n***\n****\n*****',
+        explain: `<h4>핵심 포인트</h4>
+<ul>
+  <li>안쪽 루프의 반복 횟수가 바깥 루프 변수(<code>row</code>)에 의존합니다 → <code>col <= row</code></li>
+  <li>이렇게 바깥 변수를 안쪽 조건에 활용하면 다양한 패턴을 만들 수 있습니다.</li>
+  <li><code>print</code>는 줄바꿈 없음, <code>println</code>은 줄바꿈 포함</li>
+</ul>`
+      },
+      {
+        title: '2차원 배열 합계',
+        tags: ['2D array', 'nested for'],
+        desc: '3x3 정수 2차원 배열의 모든 원소의 합을 구하는 메서드를 작성하세요.',
+        code: `<span class="kw">public static int</span> <span class="fn">sumMatrix</span>(<span class="kw">int</span>[][] matrix) {
+    <span class="cm">// TODO</span>
+}`,
+        answer: `<span class="kw">public static int</span> <span class="fn">sumMatrix</span>(<span class="kw">int</span>[][] matrix) {
+    <span class="kw">int</span> sum = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span>[] row : matrix) {     <span class="cm">// 각 행</span>
+        <span class="kw">for</span> (<span class="kw">int</span> value : row) {     <span class="cm">// 행 안의 각 값</span>
+            sum += value;
+        }
+    }
+    <span class="kw">return</span> sum;
+}`,
+        output: '{{1,2,3},{4,5,6},{7,8,9}} → 45',
+        explain: `<h4>2차원 배열 순회</h4>
+<ul>
+  <li><code>int[][]</code>는 "배열의 배열"입니다. 바깥 배열의 각 원소가 1차원 배열(행)입니다.</li>
+  <li>향상된 for문: 바깥은 <code>int[] row</code>(행 단위), 안쪽은 <code>int value</code>(원소 단위)</li>
+  <li>인덱스 방식: <code>matrix[i][j]</code> — i는 행, j는 열</li>
+</ul>`
+      }
+    ]
+  },
+
+  array: {
+    title: 'Array (배열)',
+    level: 'Beginner',
+    badgeClass: 'badge-beginner',
+    keywords: ['array', 'length', 'index', 'sort'],
+    problems: [
+      {
+        title: '배열 최댓값과 인덱스 찾기',
+        tags: ['array', 'for', 'index'],
+        desc: '정수 배열에서 최댓값과 그 인덱스를 찾아 출력하세요.',
+        code: `<span class="kw">public static void</span> <span class="fn">findMax</span>(<span class="kw">int</span>[] arr) {
+    <span class="cm">// TODO</span>
+}`,
+        answer: `<span class="kw">public static void</span> <span class="fn">findMax</span>(<span class="kw">int</span>[] arr) {
+    <span class="kw">int</span> maxIdx = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i < arr.length; i++) {
+        <span class="kw">if</span> (arr[i] > arr[maxIdx]) {
+            maxIdx = i;
+        }
+    }
+    System.out.<span class="fn">printf</span>(<span class="str">"최댓값 %d, 인덱스 %d%n"</span>, arr[maxIdx], maxIdx);
+}`,
+        output: '{3,7,2,9,4} → 최댓값 9, 인덱스 3',
+        explain: `<h4>인덱스 추적 패턴</h4>
+<ul>
+  <li>값이 아니라 <strong>인덱스</strong>를 저장하면 값과 위치를 모두 알 수 있습니다.</li>
+  <li><code>arr.length</code>로 배열 크기를 구합니다. (괄호 없음 — 필드입니다)</li>
+  <li>배열 인덱스는 0부터 시작하며 <code>arr.length - 1</code>이 마지막입니다.</li>
+</ul>`
+      },
+      {
+        title: '배열 뒤집기 (제자리)',
+        tags: ['array', 'two pointer', 'swap'],
+        desc: '추가 배열 없이, 주어진 배열을 제자리에서 뒤집는 메서드를 작성하세요.',
+        code: `<span class="kw">public static void</span> <span class="fn">reverse</span>(<span class="kw">int</span>[] arr) {
+    <span class="cm">// TODO: 양 끝에서 swap</span>
+}`,
+        answer: `<span class="kw">public static void</span> <span class="fn">reverse</span>(<span class="kw">int</span>[] arr) {
+    <span class="kw">int</span> left = <span class="num">0</span>, right = arr.length - <span class="num">1</span>;
+    <span class="kw">while</span> (left < right) {
+        <span class="kw">int</span> temp = arr[left];
+        arr[left] = arr[right];
+        arr[right] = temp;
+        left++;
+        right--;
+    }
+}`,
+        output: '{1,2,3,4,5} → {5,4,3,2,1}',
+        explain: `<h4>투 포인터(Two Pointer) 기법</h4>
+<ul>
+  <li>양 끝에서 시작하는 두 포인터가 가운데로 모이며 값을 교환합니다.</li>
+  <li><code>temp</code> 변수로 swap: 한 값을 임시 저장해야 덮어쓰지 않습니다.</li>
+  <li>O(n/2) 시간, 추가 공간 O(1) → 메모리 효율적</li>
+</ul>`
+      },
+      {
+        title: '버블 정렬 직접 구현',
+        tags: ['array', 'bubble sort', 'nested for'],
+        desc: '정수 배열을 오름차순으로 정렬하는 버블 정렬을 직접 구현하세요.',
+        code: `<span class="kw">public static void</span> <span class="fn">bubbleSort</span>(<span class="kw">int</span>[] arr) {
+    <span class="cm">// TODO</span>
+}`,
+        answer: `<span class="kw">public static void</span> <span class="fn">bubbleSort</span>(<span class="kw">int</span>[] arr) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i < arr.length - <span class="num">1</span>; i++) {
+        <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">0</span>; j < arr.length - <span class="num">1</span> - i; j++) {
+            <span class="kw">if</span> (arr[j] > arr[j + <span class="num">1</span>]) {
+                <span class="kw">int</span> t = arr[j]; arr[j] = arr[j+<span class="num">1</span>]; arr[j+<span class="num">1</span>] = t;
+            }
+        }
+    }
+}`,
+        output: '{5,2,8,1,9} → {1,2,5,8,9}',
+        explain: `<h4>버블 정렬 원리</h4>
+<ul>
+  <li>인접한 두 값을 비교해 순서가 틀리면 교환합니다.</li>
+  <li>한 바퀴 돌면 가장 큰 값이 맨 뒤로 "떠오릅니다"(bubble up).</li>
+  <li><code>- i</code>: 이미 정렬된 뒷부분은 다시 볼 필요 없으므로 범위를 줄입니다.</li>
+  <li>시간복잡도 O(n²) — 실무에선 <code>Arrays.sort()</code>를 사용합니다.</li>
+</ul>`
+      }
+    ]
+  },
+
+  'oop-basic': {
+    title: 'this / new / static / Overloading',
+    level: 'Basic',
+    badgeClass: 'badge-basic',
+    keywords: ['this', 'new', 'static', 'overloading', 'instance'],
+    problems: [
+      {
+        title: 'this()로 생성자 연쇄 호출',
+        tags: ['this', 'constructor'],
+        desc: '<code>Rectangle</code> 클래스에 생성자를 2개 만드세요. 인자가 1개면 정사각형(가로=세로), 2개면 직사각형으로 처리하되 <code>this()</code>로 연쇄 호출하세요.',
+        code: `<span class="kw">public class</span> <span class="cl">Rectangle</span> {
+    <span class="kw">int</span> width, height;
+    <span class="cm">// TODO: 생성자 2개, this() 활용</span>
+}`,
+        answer: `<span class="kw">public class</span> <span class="cl">Rectangle</span> {
+    <span class="kw">int</span> width, height;
+
+    <span class="kw">public</span> <span class="fn">Rectangle</span>(<span class="kw">int</span> side) {
+        <span class="kw">this</span>(side, side); <span class="cm">// 아래 생성자 호출 (정사각형)</span>
+    }
+
+    <span class="kw">public</span> <span class="fn">Rectangle</span>(<span class="kw">int</span> width, <span class="kw">int</span> height) {
+        <span class="kw">this</span>.width = width;
+        <span class="kw">this</span>.height = height;
+    }
+}`,
+        output: 'new Rectangle(5) → 5x5\nnew Rectangle(3,4) → 3x4',
+        explain: `<h4>this의 두 가지 용법</h4>
+<ul>
+  <li><code>this.필드</code>: 현재 객체의 필드 참조 (매개변수와 이름 충돌 해결)</li>
+  <li><code>this(...)</code>: 같은 클래스의 다른 생성자 호출. 반드시 생성자 <strong>첫 줄</strong>에 위치해야 합니다.</li>
+  <li>중복 코드를 줄이고 초기화 로직을 한 곳에 모을 수 있습니다.</li>
+</ul>`
+      },
+      {
+        title: 'static 메서드와 인스턴스 메서드',
+        tags: ['static', 'instance', 'method'],
+        desc: '<code>MathUtil</code> 클래스에 객체 생성 없이 쓸 수 있는 static 메서드 <code>square</code>를 만들고, 왜 static이 적절한지 이해하세요.',
+        code: `<span class="kw">public class</span> <span class="cl">MathUtil</span> {
+    <span class="cm">// TODO: static square(int)</span>
+}`,
+        answer: `<span class="kw">public class</span> <span class="cl">MathUtil</span> {
+    <span class="kw">public static int</span> <span class="fn">square</span>(<span class="kw">int</span> n) {
+        <span class="kw">return</span> n * n;
+    }
+}
+
+<span class="cm">// 객체 생성 없이 클래스명으로 직접 호출</span>
+<span class="kw">int</span> result = MathUtil.<span class="fn">square</span>(<span class="num">5</span>); <span class="cm">// 25</span>`,
+        output: 'MathUtil.square(5) → 25',
+        explain: `<h4>static을 언제 쓰나?</h4>
+<ul>
+  <li>객체의 상태(필드)에 의존하지 않는 메서드는 static이 적절합니다.</li>
+  <li><code>square</code>는 입력만으로 결과가 결정되므로 인스턴스가 필요 없습니다.</li>
+  <li>static 메서드 안에서는 <code>this</code>나 인스턴스 필드를 쓸 수 없습니다.</li>
+  <li>예: <code>Math.max()</code>, <code>Integer.parseInt()</code> 모두 static입니다.</li>
+</ul>`
+      },
+      {
+        title: '참조 타입의 동작 이해',
+        tags: ['reference type', 'new', 'heap'],
+        desc: '두 변수가 같은 객체를 참조할 때의 동작을 보여주는 코드를 작성하고 결과를 예측하세요.',
+        code: `<span class="kw">class</span> <span class="cl">Box</span> { <span class="kw">int</span> value; }
+
+<span class="cl">Box</span> a = <span class="kw">new</span> <span class="cl">Box</span>();
+a.value = <span class="num">10</span>;
+<span class="cl">Box</span> b = a; <span class="cm">// 참조 복사</span>
+b.value = <span class="num">99</span>;
+<span class="cm">// a.value는? b.value는?</span>`,
+        answer: `<span class="cm">// a와 b는 같은 객체를 가리킨다 (참조 복사)</span>
+System.out.println(a.value); <span class="cm">// 99</span>
+System.out.println(b.value); <span class="cm">// 99</span>
+System.out.println(a == b);  <span class="cm">// true (같은 객체)</span>
+
+<span class="cm">// 새 객체를 만들면 별개</span>
+<span class="cl">Box</span> c = <span class="kw">new</span> <span class="cl">Box</span>();
+c.value = <span class="num">99</span>;
+System.out.println(a == c);  <span class="cm">// false (다른 객체)</span>`,
+        output: '99\n99\ntrue\nfalse',
+        explain: `<h4>참조 타입의 핵심</h4>
+<ul>
+  <li><code>Box b = a</code>는 객체를 복사하는 게 아니라 <strong>주소(참조)</strong>를 복사합니다.</li>
+  <li>a와 b는 힙(Heap)의 동일한 객체를 가리킵니다 → 한쪽을 바꾸면 둘 다 영향</li>
+  <li><code>==</code>는 참조 타입에서 "같은 객체인가"를 비교합니다. 내용 비교는 <code>equals()</code></li>
+  <li>기본 타입(int, double)은 값 자체가 복사됩니다 (참조와 반대).</li>
+</ul>`
+      }
+    ]
+  },
+
+  inheritance: {
+    title: '상속 / 추상클래스 / 인터페이스',
+    level: 'Intermediate',
+    badgeClass: 'badge-intermediate',
+    keywords: ['extends', 'super', 'abstract', 'interface', 'implements'],
+    problems: [
+      {
+        title: 'extends와 super로 상속하기',
+        tags: ['extends', 'super', 'override'],
+        desc: '<code>Animal</code> 클래스를 상속받는 <code>Dog</code> 클래스를 만드세요. <code>super</code>로 부모 생성자를 호출하고 <code>makeSound</code>를 오버라이딩하세요.',
+        code: `<span class="kw">class</span> <span class="cl">Animal</span> {
+    String name;
+    <span class="cl">Animal</span>(String name) { <span class="kw">this</span>.name = name; }
+    String <span class="fn">makeSound</span>() { <span class="kw">return</span> <span class="str">"..."</span>; }
+}
+
+<span class="cm">// TODO: Dog extends Animal</span>`,
+        answer: `<span class="kw">class</span> <span class="cl">Dog</span> <span class="kw">extends</span> <span class="cl">Animal</span> {
+    String breed;
+
+    <span class="cl">Dog</span>(String name, String breed) {
+        <span class="kw">super</span>(name);      <span class="cm">// 부모 생성자 호출 (첫 줄 필수)</span>
+        <span class="kw">this</span>.breed = breed;
+    }
+
+    <span class="ann">@Override</span>
+    String <span class="fn">makeSound</span>() {
+        <span class="kw">return</span> <span class="str">"멍멍"</span>;   <span class="cm">// 부모 메서드 재정의</span>
+    }
+}`,
+        output: 'new Dog("바둑이","진돗개").makeSound() → "멍멍"',
+        explain: `<h4>상속의 기본</h4>
+<ul>
+  <li><code>extends</code>: 부모(상위) 클래스의 필드·메서드를 물려받습니다.</li>
+  <li><code>super(...)</code>: 부모 생성자 호출. 자식 생성자 첫 줄에 와야 합니다.</li>
+  <li><code>@Override</code>: 부모 메서드를 재정의함을 명시 (오타 방지용 컴파일 체크)</li>
+  <li><code>super.makeSound()</code>로 부모 버전을 호출할 수도 있습니다.</li>
+</ul>`
+      },
+      {
+        title: '추상 클래스(abstract)',
+        tags: ['abstract', 'extends'],
+        desc: '넓이를 구하는 추상 메서드를 가진 <code>Shape</code> 추상 클래스를 만들고, <code>Circle</code>이 구현하게 하세요.',
+        code: `<span class="kw">abstract class</span> <span class="cl">Shape</span> {
+    <span class="cm">// TODO: 추상 메서드 area()</span>
+}`,
+        answer: `<span class="kw">abstract class</span> <span class="cl">Shape</span> {
+    <span class="kw">abstract double</span> <span class="fn">area</span>(); <span class="cm">// 구현부 없음 — 자식이 강제 구현</span>
+
+    <span class="kw">void</span> <span class="fn">printArea</span>() {       <span class="cm">// 일반 메서드도 가능</span>
+        System.out.println(<span class="str">"넓이: "</span> + <span class="fn">area</span>());
+    }
+}
+
+<span class="kw">class</span> <span class="cl">Circle</span> <span class="kw">extends</span> <span class="cl">Shape</span> {
+    <span class="kw">double</span> radius;
+    <span class="cl">Circle</span>(<span class="kw">double</span> r) { radius = r; }
+
+    <span class="ann">@Override</span>
+    <span class="kw">double</span> <span class="fn">area</span>() { <span class="kw">return</span> Math.PI * radius * radius; }
+}`,
+        output: 'new Circle(5).printArea() → 넓이: 78.53...',
+        explain: `<h4>추상 클래스 vs 일반 클래스</h4>
+<ul>
+  <li><code>abstract</code> 클래스는 직접 <code>new</code>로 객체 생성 불가 → 반드시 상속받아 사용</li>
+  <li>추상 메서드(구현부 없음)는 자식이 반드시 구현해야 합니다.</li>
+  <li>일반 메서드와 필드도 함께 가질 수 있습니다 (인터페이스와의 차이점).</li>
+  <li>"공통 기반 + 일부 강제 구현"이 필요할 때 사용합니다.</li>
+</ul>`
+      },
+      {
+        title: '인터페이스와 default 메서드',
+        tags: ['interface', 'implements', 'default method'],
+        desc: '<code>Drawable</code> 인터페이스를 만들고 추상 메서드와 default 메서드를 모두 정의한 뒤 <code>Button</code>이 구현하게 하세요.',
+        code: `<span class="kw">interface</span> <span class="cl">Drawable</span> {
+    <span class="cm">// TODO: 추상 메서드 + default 메서드</span>
+}`,
+        answer: `<span class="kw">interface</span> <span class="cl">Drawable</span> {
+    <span class="kw">void</span> <span class="fn">draw</span>();              <span class="cm">// 추상 메서드 (구현 강제)</span>
+
+    <span class="kw">default void</span> <span class="fn">render</span>() {    <span class="cm">// default 메서드 (구현 제공)</span>
+        System.out.println(<span class="str">"렌더링 시작"</span>);
+        <span class="fn">draw</span>();
+        System.out.println(<span class="str">"렌더링 끝"</span>);
+    }
+}
+
+<span class="kw">class</span> <span class="cl">Button</span> <span class="kw">implements</span> <span class="cl">Drawable</span> {
+    <span class="ann">@Override</span>
+    <span class="kw">public void</span> <span class="fn">draw</span>() {
+        System.out.println(<span class="str">"[버튼 그리기]"</span>);
+    }
+}`,
+        output: '렌더링 시작\n[버튼 그리기]\n렌더링 끝',
+        explain: `<h4>인터페이스 핵심</h4>
+<ul>
+  <li><code>implements</code>로 구현하며, 여러 인터페이스를 동시에 구현 가능(다중 상속 효과)</li>
+  <li>모든 메서드는 기본적으로 <code>public abstract</code>입니다.</li>
+  <li><code>default</code> 메서드(Java 8+): 인터페이스에 기본 구현을 제공 → 구현 클래스는 선택적으로 재정의</li>
+  <li>추상 클래스와 달리 인스턴스 필드를 가질 수 없습니다 (상수만 가능).</li>
+</ul>`
+      }
+    ]
+  },
+
+  polymorphism: {
+    title: '다형성 / instanceof / 패턴매칭',
+    level: 'Intermediate',
+    badgeClass: 'badge-intermediate',
+    keywords: ['polymorphism', 'instanceof', 'sealed', 'pattern matching'],
+    problems: [
+      {
+        title: '다형성으로 도형 배열 처리',
+        tags: ['polymorphism', 'upcasting'],
+        desc: '부모 타입 배열에 여러 자식 객체를 담아, 같은 메서드 호출로 각자 다르게 동작하게 만드세요.',
+        code: `<span class="kw">abstract class</span> <span class="cl">Shape</span> { <span class="kw">abstract double</span> <span class="fn">area</span>(); }
+<span class="kw">class</span> <span class="cl">Circle</span> <span class="kw">extends</span> <span class="cl">Shape</span> { <span class="cm">/* ... */</span> }
+<span class="kw">class</span> <span class="cl">Square</span> <span class="kw">extends</span> <span class="cl">Shape</span> { <span class="cm">/* ... */</span> }
+
+<span class="cm">// TODO: Shape[] 배열로 다형적 처리</span>`,
+        answer: `<span class="cl">Shape</span>[] shapes = {
+    <span class="kw">new</span> <span class="cl">Circle</span>(<span class="num">5</span>),
+    <span class="kw">new</span> <span class="cl">Square</span>(<span class="num">4</span>),
+    <span class="kw">new</span> <span class="cl">Circle</span>(<span class="num">2</span>)
+};
+
+<span class="kw">double</span> total = <span class="num">0</span>;
+<span class="kw">for</span> (<span class="cl">Shape</span> s : shapes) {
+    total += s.<span class="fn">area</span>(); <span class="cm">// 실제 객체 타입의 area()가 호출됨</span>
+}
+System.out.println(<span class="str">"총 넓이: "</span> + total);`,
+        output: '각 객체의 실제 area()가 호출되어 합산됨',
+        explain: `<h4>다형성(Polymorphism)</h4>
+<ul>
+  <li>부모 타입 변수가 자식 객체를 가리킬 수 있습니다 (업캐스팅).</li>
+  <li><code>s.area()</code> 호출 시, 컴파일 타입(Shape)이 아닌 <strong>실제 객체 타입</strong>의 메서드가 실행됩니다 (동적 바인딩).</li>
+  <li>새 도형을 추가해도 반복 코드는 그대로 → 확장에 유연(OCP 원칙)</li>
+</ul>`
+      },
+      {
+        title: 'instanceof 패턴 매칭 (Java 16+)',
+        tags: ['instanceof', 'pattern matching', 'downcasting'],
+        desc: 'Object 타입 인자를 받아, 타입에 따라 다르게 처리하세요. Java 16+ 패턴 매칭을 사용하세요.',
+        code: `<span class="kw">public static</span> String <span class="fn">describe</span>(Object obj) {
+    <span class="cm">// TODO: instanceof 패턴 매칭</span>
+}`,
+        answer: `<span class="kw">public static</span> String <span class="fn">describe</span>(Object obj) {
+    <span class="kw">if</span> (obj <span class="kw">instanceof</span> String s) {
+        <span class="kw">return</span> <span class="str">"문자열 길이: "</span> + s.<span class="fn">length</span>();
+    } <span class="kw">else if</span> (obj <span class="kw">instanceof</span> <span class="cl">Integer</span> i) {
+        <span class="kw">return</span> <span class="str">"정수 제곱: "</span> + (i * i);
+    } <span class="kw">else if</span> (obj <span class="kw">instanceof</span> <span class="kw">int</span>[] arr) {
+        <span class="kw">return</span> <span class="str">"배열 크기: "</span> + arr.length;
+    }
+    <span class="kw">return</span> <span class="str">"알 수 없는 타입"</span>;
+}`,
+        output: 'describe("hi") → 문자열 길이: 2\ndescribe(5) → 정수 제곱: 25',
+        explain: `<h4>패턴 매칭 instanceof</h4>
+<ul>
+  <li>기존: <code>if (obj instanceof String) { String s = (String) obj; ... }</code> — 캐스팅 필요</li>
+  <li>Java 16+: <code>if (obj instanceof String s)</code> — 검사와 동시에 변수 <code>s</code>에 바인딩</li>
+  <li>캐스팅 코드가 사라져 가독성이 좋고 실수가 줄어듭니다.</li>
+  <li>바인딩된 변수는 해당 조건이 참인 범위 안에서만 사용 가능합니다.</li>
+</ul>`
+      },
+      {
+        title: 'Sealed 클래스 + switch 패턴 매칭',
+        tags: ['sealed', 'switch', 'pattern matching'],
+        desc: 'sealed 인터페이스로 허용된 하위 타입을 제한하고, switch 패턴 매칭으로 처리하세요.',
+        code: `<span class="kw">sealed interface</span> <span class="cl">Payment</span>
+    <span class="kw">permits</span> <span class="cl">Card</span>, <span class="cl">Cash</span>, <span class="cl">Transfer</span> {}
+
+<span class="cm">// TODO: switch로 처리</span>`,
+        answer: `<span class="kw">sealed interface</span> <span class="cl">Payment</span> <span class="kw">permits</span> <span class="cl">Card</span>, <span class="cl">Cash</span>, <span class="cl">Transfer</span> {}
+<span class="kw">record</span> <span class="cl">Card</span>(String no) <span class="kw">implements</span> <span class="cl">Payment</span> {}
+<span class="kw">record</span> <span class="cl">Cash</span>(<span class="kw">int</span> amount) <span class="kw">implements</span> <span class="cl">Payment</span> {}
+<span class="kw">record</span> <span class="cl">Transfer</span>(String bank) <span class="kw">implements</span> <span class="cl">Payment</span> {}
+
+<span class="kw">static</span> String <span class="fn">process</span>(<span class="cl">Payment</span> p) {
+    <span class="kw">return switch</span> (p) {
+        <span class="kw">case</span> <span class="cl">Card</span> c     -> <span class="str">"카드: "</span> + c.no();
+        <span class="kw">case</span> <span class="cl">Cash</span> c     -> <span class="str">"현금: "</span> + c.amount();
+        <span class="kw">case</span> <span class="cl">Transfer</span> t -> <span class="str">"이체: "</span> + t.bank();
+    }; <span class="cm">// default 불필요 — 모든 경우 처리됨</span>
+}`,
+        output: 'process(new Card("1234")) → 카드: 1234',
+        explain: `<h4>Sealed + Pattern Matching (Java 17+)</h4>
+<ul>
+  <li><code>sealed</code> + <code>permits</code>: 상속/구현할 수 있는 클래스를 명시적으로 제한</li>
+  <li>switch에서 모든 허용 타입을 다루면 <code>default</code>가 필요 없습니다 (컴파일러가 완전성 검증).</li>
+  <li>새 타입을 permits에 추가하면, switch에서 누락된 곳을 컴파일러가 알려줍니다 → 안전한 확장</li>
+</ul>`
+      }
+    ]
+  },
+
+  designpattern: {
+    title: 'Design Pattern',
+    level: 'Intermediate',
+    badgeClass: 'badge-intermediate',
+    keywords: ['singleton', 'factory', 'proxy', 'builder'],
+    problems: [
+      {
+        title: 'Factory 패턴',
+        tags: ['factory', 'interface'],
+        desc: '동물 종류 문자열을 받아 해당 객체를 생성해 반환하는 <code>AnimalFactory</code>를 만드세요.',
+        code: `<span class="kw">interface</span> <span class="cl">Animal</span> { String <span class="fn">sound</span>(); }
+
+<span class="cm">// TODO: AnimalFactory.create("dog")</span>`,
+        answer: `<span class="kw">interface</span> <span class="cl">Animal</span> { String <span class="fn">sound</span>(); }
+<span class="kw">class</span> <span class="cl">Dog</span> <span class="kw">implements</span> <span class="cl">Animal</span> { <span class="kw">public</span> String <span class="fn">sound</span>() { <span class="kw">return</span> <span class="str">"멍멍"</span>; } }
+<span class="kw">class</span> <span class="cl">Cat</span> <span class="kw">implements</span> <span class="cl">Animal</span> { <span class="kw">public</span> String <span class="fn">sound</span>() { <span class="kw">return</span> <span class="str">"야옹"</span>; } }
+
+<span class="kw">class</span> <span class="cl">AnimalFactory</span> {
+    <span class="kw">public static</span> <span class="cl">Animal</span> <span class="fn">create</span>(String type) {
+        <span class="kw">return switch</span> (type) {
+            <span class="kw">case</span> <span class="str">"dog"</span> -> <span class="kw">new</span> <span class="cl">Dog</span>();
+            <span class="kw">case</span> <span class="str">"cat"</span> -> <span class="kw">new</span> <span class="cl">Cat</span>();
+            <span class="kw">default</span> -> <span class="kw">throw new</span> <span class="cl">IllegalArgumentException</span>(type);
+        };
+    }
+}`,
+        output: 'AnimalFactory.create("dog").sound() → "멍멍"',
+        explain: `<h4>Factory 패턴</h4>
+<ul>
+  <li>객체 생성 로직을 한 곳(팩토리)에 모읍니다.</li>
+  <li>호출하는 쪽은 <code>new Dog()</code>를 직접 쓰지 않고 팩토리에 맡깁니다 → 결합도 감소</li>
+  <li>새 타입 추가 시 팩토리만 수정하면 됩니다.</li>
+</ul>`
+      },
+      {
+        title: 'Singleton (enum 방식)',
+        tags: ['singleton', 'enum', 'thread-safe'],
+        desc: 'enum을 이용한 가장 안전한 Singleton을 구현하세요.',
+        code: `<span class="cm">// TODO: enum Singleton</span>`,
+        answer: `<span class="kw">public enum</span> <span class="cl">Database</span> {
+    INSTANCE;  <span class="cm">// 유일한 인스턴스</span>
+
+    <span class="kw">private</span> List<String> data = <span class="kw">new</span> ArrayList<>();
+
+    <span class="kw">public void</span> <span class="fn">save</span>(String item) { data.<span class="fn">add</span>(item); }
+    <span class="kw">public int</span> <span class="fn">count</span>() { <span class="kw">return</span> data.size(); }
+}
+
+<span class="cm">// 사용</span>
+Database.INSTANCE.<span class="fn">save</span>(<span class="str">"user1"</span>);
+System.out.println(Database.INSTANCE.<span class="fn">count</span>()); <span class="cm">// 1</span>`,
+        output: 'Database.INSTANCE.count() → 1',
+        explain: `<h4>enum Singleton의 장점</h4>
+<ul>
+  <li>JVM이 enum 상수의 단일 인스턴스를 보장 → 별도 코드 없이 thread-safe</li>
+  <li>리플렉션 공격, 직렬화 문제에도 안전 (조슈아 블로크가 권장하는 방식)</li>
+  <li><code>getInstance()</code> 메서드도 필요 없이 <code>INSTANCE</code>로 바로 접근</li>
+</ul>`
+      },
+      {
+        title: 'Proxy 패턴 (지연 로딩)',
+        tags: ['proxy', 'interface', 'lazy loading'],
+        desc: '무거운 객체의 로딩을 실제 사용 시점까지 미루는 Proxy를 구현하세요.',
+        code: `<span class="kw">interface</span> <span class="cl">Image</span> { <span class="kw">void</span> <span class="fn">display</span>(); }
+
+<span class="cm">// TODO: RealImage(무거움) + ProxyImage(지연 로딩)</span>`,
+        answer: `<span class="kw">interface</span> <span class="cl">Image</span> { <span class="kw">void</span> <span class="fn">display</span>(); }
+
+<span class="kw">class</span> <span class="cl">RealImage</span> <span class="kw">implements</span> <span class="cl">Image</span> {
+    <span class="cl">RealImage</span>(String file) {
+        System.out.println(<span class="str">"디스크에서 로딩: "</span> + file); <span class="cm">// 무거운 작업</span>
+    }
+    <span class="kw">public void</span> <span class="fn">display</span>() { System.out.println(<span class="str">"표시"</span>); }
+}
+
+<span class="kw">class</span> <span class="cl">ProxyImage</span> <span class="kw">implements</span> <span class="cl">Image</span> {
+    <span class="kw">private</span> <span class="cl">RealImage</span> real;
+    <span class="kw">private</span> String file;
+    <span class="cl">ProxyImage</span>(String file) { <span class="kw">this</span>.file = file; }
+
+    <span class="kw">public void</span> <span class="fn">display</span>() {
+        <span class="kw">if</span> (real == <span class="kw">null</span>)
+            real = <span class="kw">new</span> <span class="cl">RealImage</span>(file); <span class="cm">// 최초 호출 때만 로딩</span>
+        real.<span class="fn">display</span>();
+    }
+}`,
+        output: '생성 시엔 로딩 안 함 → display() 첫 호출 때 로딩',
+        explain: `<h4>Proxy 패턴</h4>
+<ul>
+  <li>실제 객체를 대신하는 대리 객체를 두어 접근을 제어합니다.</li>
+  <li>지연 로딩(Lazy Loading): 실제로 필요할 때까지 무거운 객체 생성을 미룹니다.</li>
+  <li>그 외 활용: 접근 권한 체크, 로깅, 캐싱, 원격 호출 등</li>
+  <li>Spring AOP, Hibernate 지연 로딩 등이 내부적으로 프록시를 사용합니다.</li>
+</ul>`
+      }
+    ]
+  },
+
+  jvm: {
+    title: 'JVM / GC / Class Loader',
+    level: 'Advanced',
+    badgeClass: 'badge-advanced',
+    keywords: ['JVM', 'Heap', 'Stack', 'GC', 'class loader'],
+    problems: [
+      {
+        title: 'Stack과 Heap 메모리 구분',
+        tags: ['stack', 'heap', 'memory'],
+        desc: '다음 코드에서 각 변수와 객체가 Stack과 Heap 중 어디에 저장되는지 설명하세요.',
+        code: `<span class="kw">public void</span> <span class="fn">example</span>() {
+    <span class="kw">int</span> x = <span class="num">10</span>;              <span class="cm">// ?</span>
+    String name = <span class="kw">new</span> String(<span class="str">"Java"</span>); <span class="cm">// ?</span>
+    <span class="kw">int</span>[] arr = <span class="kw">new int</span>[<span class="num">5</span>];   <span class="cm">// ?</span>
+}`,
+        answer: `<span class="cm">// 메모리 배치 분석:
+
+// [Stack 영역] — 메서드 호출 시 생성, 종료 시 소멸
+//   x = 10           → 기본 타입 값 자체가 Stack에 저장
+//   name (참조변수)  → Heap 객체의 주소를 Stack에 저장
+//   arr (참조변수)   → Heap 배열의 주소를 Stack에 저장
+
+// [Heap 영역] — new로 생성된 모든 객체
+//   new String("Java")  → 실제 String 객체
+//   new int[5]          → 실제 배열 (값 0,0,0,0,0)</span>`,
+        output: '기본형 값 → Stack / 객체 실체 → Heap / 참조변수 → Stack',
+        explain: `<h4>Runtime Data Areas</h4>
+<ul>
+  <li><strong>Stack</strong>: 메서드별 프레임. 지역변수, 기본 타입 값, 객체 참조(주소) 저장. 메서드 종료 시 사라짐</li>
+  <li><strong>Heap</strong>: <code>new</code>로 생성된 모든 객체와 배열. GC의 관리 대상</li>
+  <li><strong>Method Area</strong>: 클래스 정보, static 변수, 상수 저장</li>
+  <li>참조변수는 Stack에, 그 변수가 가리키는 객체는 Heap에 있습니다.</li>
+</ul>`
+      },
+      {
+        title: 'Garbage Collection 대상 이해',
+        tags: ['GC', 'reference', 'memory'],
+        desc: '어느 시점에 객체가 GC 대상이 되는지 판단하세요.',
+        code: `<span class="cl">StringBuilder</span> sb = <span class="kw">new</span> <span class="cl">StringBuilder</span>(); <span class="cm">// 객체 A</span>
+sb = <span class="kw">new</span> <span class="cl">StringBuilder</span>();             <span class="cm">// 객체 B</span>
+<span class="cm">// 객체 A는 어떻게 되는가?</span>`,
+        answer: `<span class="cm">// 객체 A는 GC 대상이 된다.
+
+// 1줄: sb → [객체 A]
+// 2줄: sb → [객체 B]  (A를 가리키던 참조가 끊어짐)
+
+// 이제 객체 A를 가리키는 참조가 아무것도 없음
+// → "도달 불가능(unreachable)" 상태
+// → 다음 GC 실행 시 메모리에서 회수됨
+
+// 명시적으로 끊고 싶다면:
+sb = <span class="kw">null</span>;  <span class="cm">// 참조 제거</span></span>`,
+        output: '참조가 끊긴 객체 A → 도달 불가능 → GC 대상',
+        explain: `<h4>GC의 판단 기준: 도달 가능성</h4>
+<ul>
+  <li>GC Root(Stack 변수, static 변수 등)에서 참조를 따라가 <strong>도달 가능한</strong> 객체는 살아있습니다.</li>
+  <li>어디서도 도달할 수 없는 객체는 회수 대상입니다.</li>
+  <li>Java는 개발자가 직접 메모리를 해제하지 않습니다 (C/C++의 free와 다름).</li>
+  <li><code>System.gc()</code>는 GC를 "요청"할 뿐 즉시 실행을 보장하지 않습니다.</li>
+</ul>`
+      },
+      {
+        title: 'Class Loader 동작 순서',
+        tags: ['class loader', 'static', 'initialization'],
+        desc: 'static 블록과 인스턴스 초기화가 실행되는 순서를 예측하세요.',
+        code: `<span class="kw">class</span> <span class="cl">Demo</span> {
+    <span class="kw">static</span> { System.out.println(<span class="str">"1. static 블록"</span>); }
+    { System.out.println(<span class="str">"2. 인스턴스 블록"</span>); }
+    <span class="cl">Demo</span>() { System.out.println(<span class="str">"3. 생성자"</span>); }
+}
+<span class="cm">// new Demo()를 두 번 하면?</span>`,
+        answer: `<span class="cm">// new Demo(); new Demo(); 실행 결과:
+
+// 1. static 블록      ← 클래스 로딩 시 단 1번만
+// 2. 인스턴스 블록
+// 3. 생성자
+// 2. 인스턴스 블록     ← 두 번째 객체
+// 3. 생성자
+
+// static 블록은 클래스가 처음 로딩될 때 1회 실행
+// 인스턴스 블록 + 생성자는 객체 생성마다 실행</span>`,
+        output: '1(1회) → 2,3 → 2,3',
+        explain: `<h4>Class Loader & 초기화 순서</h4>
+<ul>
+  <li><strong>로딩</strong>: 클래스가 처음 사용될 때 Class Loader가 .class 파일을 메모리에 적재</li>
+  <li><strong>static 초기화</strong>: 클래스당 1회, 가장 먼저 실행</li>
+  <li><strong>인스턴스 초기화</strong>: 객체 생성마다 (인스턴스 블록 → 생성자 순)</li>
+  <li>상속 시: 부모 static → 자식 static → 부모 인스턴스/생성자 → 자식 인스턴스/생성자</li>
+</ul>`
+      }
+    ]
+  },
+
+  string: {
+    title: 'String / StringBuilder / StringBuffer',
+    level: 'Advanced',
+    badgeClass: 'badge-advanced',
+    keywords: ['String', 'StringBuilder', 'immutable', 'intern'],
+    problems: [
+      {
+        title: 'String 불변성과 == vs equals',
+        tags: ['String', 'immutable', 'equals'],
+        desc: '다음 비교 결과를 예측하고 이유를 설명하세요.',
+        code: `String a = <span class="str">"hello"</span>;
+String b = <span class="str">"hello"</span>;
+String c = <span class="kw">new</span> String(<span class="str">"hello"</span>);
+<span class="cm">// a == b ?  a == c ?  a.equals(c) ?</span>`,
+        answer: `System.out.println(a == b);        <span class="cm">// true</span>
+System.out.println(a == c);        <span class="cm">// false</span>
+System.out.println(a.<span class="fn">equals</span>(c));   <span class="cm">// true</span>
+
+<span class="cm">// 이유:
+// a, b → 문자열 리터럴 → String Pool의 같은 객체 공유 → == true
+// c    → new로 생성 → Heap에 별도 객체 → a와 주소 다름 → == false
+// equals → 내용(문자) 비교 → 모두 "hello"이므로 true</span>`,
+        output: 'true / false / true',
+        explain: `<h4>String 핵심 3가지</h4>
+<ul>
+  <li><strong>불변(immutable)</strong>: String 객체는 생성 후 변경 불가. "수정"하면 새 객체가 생김</li>
+  <li><strong>String Pool</strong>: 리터럴 <code>"hello"</code>는 풀에서 재사용 → 같은 리터럴은 같은 객체</li>
+  <li><code>==</code>는 주소 비교, <code>equals()</code>는 내용 비교 → 문자열 비교는 항상 <code>equals()</code></li>
+</ul>`
+      },
+      {
+        title: 'StringBuilder로 효율적 문자열 조합',
+        tags: ['StringBuilder', 'performance', 'append'],
+        desc: '1부터 1000까지를 콤마로 연결한 문자열을 효율적으로 만드세요. String 연결과 StringBuilder의 차이를 이해하세요.',
+        code: `<span class="kw">public static</span> String <span class="fn">join</span>() {
+    <span class="cm">// TODO: StringBuilder 사용</span>
+}`,
+        answer: `<span class="kw">public static</span> String <span class="fn">join</span>() {
+    <span class="cl">StringBuilder</span> sb = <span class="kw">new</span> <span class="cl">StringBuilder</span>();
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i <= <span class="num">1000</span>; i++) {
+        sb.<span class="fn">append</span>(i);
+        <span class="kw">if</span> (i < <span class="num">1000</span>) sb.<span class="fn">append</span>(<span class="str">","</span>);
+    }
+    <span class="kw">return</span> sb.<span class="fn">toString</span>();
+}
+
+<span class="cm">// ❌ 나쁜 예: String += 는 매번 새 객체 생성
+// String s = "";
+// for (...) s += i + ",";  → 1000개의 임시 객체 생성!</span>`,
+        output: '"1,2,3,...,1000"',
+        explain: `<h4>왜 StringBuilder인가?</h4>
+<ul>
+  <li>String은 불변이라 <code>+=</code>마다 새 객체를 만듭니다 → 반복문에서 매우 비효율</li>
+  <li>StringBuilder는 내부 가변 버퍼에 추가 → 객체 생성 없이 누적</li>
+  <li><strong>StringBuilder vs StringBuffer</strong>: 기능 동일. StringBuffer는 <code>synchronized</code>(스레드 안전), StringBuilder는 더 빠름(단일 스레드용)</li>
+</ul>`
+      },
+      {
+        title: 'StringTokenizer로 문자열 분리',
+        tags: ['StringTokenizer', 'split', 'parsing'],
+        desc: '"apple,banana,,cherry" 문자열을 콤마로 분리할 때 StringTokenizer와 split()의 차이를 보이세요.',
+        code: `String data = <span class="str">"apple,banana,,cherry"</span>;
+<span class="cm">// StringTokenizer와 split() 결과 비교</span>`,
+        answer: `String data = <span class="str">"apple,banana,,cherry"</span>;
+
+<span class="cm">// 1. split() — 빈 토큰 포함</span>
+String[] arr = data.<span class="fn">split</span>(<span class="str">","</span>);
+<span class="cm">// ["apple", "banana", "", "cherry"] → 길이 4</span>
+
+<span class="cm">// 2. StringTokenizer — 빈 토큰 자동 제거</span>
+<span class="cl">StringTokenizer</span> st = <span class="kw">new</span> <span class="cl">StringTokenizer</span>(data, <span class="str">","</span>);
+<span class="kw">while</span> (st.<span class="fn">hasMoreTokens</span>()) {
+    System.out.println(st.<span class="fn">nextToken</span>());
+}
+<span class="cm">// apple, banana, cherry → 3개 (빈 값 제외)</span>`,
+        output: 'split → 4개(빈 값 포함)\nStringTokenizer → 3개(빈 값 제외)',
+        explain: `<h4>split vs StringTokenizer</h4>
+<ul>
+  <li><code>split()</code>: 정규식 기반, 빈 토큰도 포함(연속 구분자 사이). 배열 반환</li>
+  <li><code>StringTokenizer</code>: 단순 구분자, 빈 토큰 자동 제거. 하나씩 꺼내 사용</li>
+  <li>빈 값 처리가 중요하면 <code>split()</code>, 단순 토큰화엔 어느 쪽이든 OK</li>
+  <li>현대 코드에서는 주로 <code>split()</code>이나 Stream을 더 많이 사용합니다.</li>
+</ul>`
+      }
+    ]
+  },
+
+  generics: {
+    title: 'Generics / Enum / Annotation',
+    level: 'Advanced',
+    badgeClass: 'badge-advanced',
+    keywords: ['generics', 'enum', 'annotation', 'PECS'],
+    problems: [
+      {
+        title: '제네릭 클래스 만들기',
+        tags: ['generics', 'type parameter'],
+        desc: '어떤 타입이든 담을 수 있는 제네릭 <code>Box&lt;T&gt;</code> 클래스를 만드세요.',
+        code: `<span class="kw">public class</span> <span class="cl">Box</span>&lt;T&gt; {
+    <span class="cm">// TODO</span>
+}`,
+        answer: `<span class="kw">public class</span> <span class="cl">Box</span>&lt;T&gt; {
+    <span class="kw">private</span> T item;
+
+    <span class="kw">public void</span> <span class="fn">set</span>(T item) { <span class="kw">this</span>.item = item; }
+    <span class="kw">public</span> T <span class="fn">get</span>() { <span class="kw">return</span> item; }
+}
+
+<span class="cm">// 사용 — 타입 안전</span>
+<span class="cl">Box</span>&lt;String&gt; box = <span class="kw">new</span> <span class="cl">Box</span>&lt;&gt;();
+box.<span class="fn">set</span>(<span class="str">"hello"</span>);
+String s = box.<span class="fn">get</span>(); <span class="cm">// 캐스팅 불필요</span>`,
+        output: 'Box<String> → get()이 String 반환 (캐스팅 X)',
+        explain: `<h4>제네릭의 이점</h4>
+<ul>
+  <li><code>&lt;T&gt;</code>는 타입 파라미터 → 사용 시점에 구체 타입으로 결정</li>
+  <li>컴파일 타임에 타입 체크 → <code>ClassCastException</code> 방지</li>
+  <li>꺼낼 때 캐스팅이 필요 없어 코드가 깔끔합니다.</li>
+  <li>관례: T(Type), E(Element), K/V(Key/Value), N(Number)</li>
+</ul>`
+      },
+      {
+        title: 'Enum에 필드와 메서드 추가',
+        tags: ['enum', 'field', 'method'],
+        desc: '각 요일이 주말 여부를 가지는 <code>Day</code> enum을 만드세요.',
+        code: `<span class="kw">public enum</span> <span class="cl">Day</span> {
+    <span class="cm">// TODO: 필드 + 생성자 + 메서드</span>
+}`,
+        answer: `<span class="kw">public enum</span> <span class="cl">Day</span> {
+    MON(<span class="kw">false</span>), TUE(<span class="kw">false</span>), WED(<span class="kw">false</span>),
+    THU(<span class="kw">false</span>), FRI(<span class="kw">false</span>),
+    SAT(<span class="kw">true</span>), SUN(<span class="kw">true</span>);
+
+    <span class="kw">private final boolean</span> weekend;
+
+    <span class="cl">Day</span>(<span class="kw">boolean</span> weekend) {  <span class="cm">// enum 생성자는 private</span>
+        <span class="kw">this</span>.weekend = weekend;
+    }
+
+    <span class="kw">public boolean</span> <span class="fn">isWeekend</span>() { <span class="kw">return</span> weekend; }
+}
+
+<span class="cm">// 사용</span>
+System.out.println(Day.SAT.<span class="fn">isWeekend</span>()); <span class="cm">// true</span>`,
+        output: 'Day.SAT.isWeekend() → true\nDay.MON.isWeekend() → false',
+        explain: `<h4>Enum은 단순 상수가 아니다</h4>
+<ul>
+  <li>각 상수는 사실 enum 타입의 인스턴스입니다.</li>
+  <li>필드, 생성자, 메서드를 가질 수 있습니다 (생성자는 항상 private).</li>
+  <li><code>SAT(true)</code>처럼 상수 선언 시 생성자 인자를 전달합니다.</li>
+  <li><code>values()</code>(전체 배열), <code>valueOf("SAT")</code>(이름으로 조회) 자동 제공</li>
+</ul>`
+      },
+      {
+        title: 'PECS — 와일드카드 활용',
+        tags: ['generics', 'wildcard', 'PECS', 'extends/super'],
+        desc: '리스트의 숫자들을 합산하는 메서드를 만들되, Integer/Double 등 어떤 Number 하위 타입 리스트도 받게 하세요.',
+        code: `<span class="kw">public static double</span> <span class="fn">sum</span>(List&lt;? <span class="kw">extends</span> Number&gt; list) {
+    <span class="cm">// TODO</span>
+}`,
+        answer: `<span class="kw">public static double</span> <span class="fn">sum</span>(List&lt;? <span class="kw">extends</span> Number&gt; list) {
+    <span class="kw">double</span> total = <span class="num">0</span>;
+    <span class="kw">for</span> (Number n : list) {
+        total += n.<span class="fn">doubleValue</span>();
+    }
+    <span class="kw">return</span> total;
+}
+
+<span class="cm">// 둘 다 호출 가능</span>
+<span class="fn">sum</span>(List.<span class="fn">of</span>(<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>));        <span class="cm">// Integer 리스트</span>
+<span class="fn">sum</span>(List.<span class="fn">of</span>(<span class="num">1.5</span>, <span class="num">2.5</span>));     <span class="cm">// Double 리스트</span>`,
+        output: 'sum([1,2,3]) → 6.0\nsum([1.5,2.5]) → 4.0',
+        explain: `<h4>PECS 원칙</h4>
+<p><strong>P</strong>roducer <strong>E</strong>xtends, <strong>C</strong>onsumer <strong>S</strong>uper</p>
+<ul>
+  <li><code>? extends T</code>: 데이터를 <strong>꺼낼</strong>(읽을) 때. 생산자 역할 → 위 예시처럼 읽기 전용</li>
+  <li><code>? super T</code>: 데이터를 <strong>넣을</strong>(쓸) 때. 소비자 역할</li>
+  <li><code>extends</code> 와일드카드 리스트엔 값을 add할 수 없습니다 (읽기만 안전).</li>
+</ul>`
+      }
+    ]
+  },
+
+  collection: {
+    title: 'Collection Framework',
+    level: 'Advanced',
+    badgeClass: 'badge-advanced',
+    keywords: ['List', 'Set', 'Map', 'Collections', 'Comparable'],
+    problems: [
+      {
+        title: 'List vs Set 차이 체험',
+        tags: ['ArrayList', 'HashSet', 'duplicate'],
+        desc: '같은 데이터를 List와 Set에 넣고 중복 처리 차이를 확인하세요.',
+        code: `<span class="cm">// {1, 2, 2, 3, 3, 3} 을 List와 Set에 추가하면?</span>`,
+        answer: `<span class="kw">int</span>[] data = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">3</span>, <span class="num">3</span>};
+
+List&lt;<span class="cl">Integer</span>&gt; list = <span class="kw">new</span> ArrayList&lt;&gt;();
+Set&lt;<span class="cl">Integer</span>&gt; set = <span class="kw">new</span> HashSet&lt;&gt;();
+
+<span class="kw">for</span> (<span class="kw">int</span> n : data) {
+    list.<span class="fn">add</span>(n);
+    set.<span class="fn">add</span>(n);
+}
+
+System.out.println(list); <span class="cm">// [1, 2, 2, 3, 3, 3] — 중복 허용, 순서 유지</span>
+System.out.println(set);  <span class="cm">// [1, 2, 3] — 중복 제거</span>`,
+        output: 'list → [1, 2, 2, 3, 3, 3]\nset → [1, 2, 3]',
+        explain: `<h4>List vs Set</h4>
+<ul>
+  <li><strong>List</strong>: 순서 있음, 중복 허용, 인덱스 접근 (ArrayList, LinkedList)</li>
+  <li><strong>Set</strong>: 중복 불허, HashSet은 순서 보장 안 함 / TreeSet은 정렬 / LinkedHashSet은 삽입 순서</li>
+  <li>ArrayList는 인덱스 접근 빠름, LinkedList는 중간 삽입/삭제 빠름</li>
+</ul>`
+      },
+      {
+        title: 'Map으로 단어 빈도수 세기',
+        tags: ['HashMap', 'getOrDefault', 'frequency'],
+        desc: '문자열 배열에서 각 단어의 등장 횟수를 세어 Map에 저장하세요.',
+        code: `<span class="kw">public static</span> Map&lt;String, <span class="cl">Integer</span>&gt; <span class="fn">countWords</span>(String[] words) {
+    <span class="cm">// TODO</span>
+}`,
+        answer: `<span class="kw">public static</span> Map&lt;String, <span class="cl">Integer</span>&gt; <span class="fn">countWords</span>(String[] words) {
+    Map&lt;String, <span class="cl">Integer</span>&gt; count = <span class="kw">new</span> HashMap&lt;&gt;();
+    <span class="kw">for</span> (String w : words) {
+        count.<span class="fn">put</span>(w, count.<span class="fn">getOrDefault</span>(w, <span class="num">0</span>) + <span class="num">1</span>);
+        <span class="cm">// 또는: count.merge(w, 1, Integer::sum);</span>
+    }
+    <span class="kw">return</span> count;
+}`,
+        output: '["a","b","a","c","a"] → {a=3, b=1, c=1}',
+        explain: `<h4>Map 빈도수 패턴</h4>
+<ul>
+  <li><code>getOrDefault(key, 0)</code>: 키가 없으면 기본값 0 반환 → null 체크 불필요</li>
+  <li><code>merge(key, 1, Integer::sum)</code>: 더 간결한 대안</li>
+  <li>HashMap은 키 순서 보장 안 함. 순서 필요시 LinkedHashMap, 정렬 필요시 TreeMap</li>
+  <li>Map은 키 중복 불가, 값은 중복 가능</li>
+</ul>`
+      },
+      {
+        title: 'Comparable로 객체 정렬',
+        tags: ['Comparable', 'Comparator', 'sort'],
+        desc: '<code>Student</code> 객체 리스트를 점수 높은 순으로 정렬하세요.',
+        code: `<span class="kw">record</span> <span class="cl">Student</span>(String name, <span class="kw">int</span> score) {}
+<span class="cm">// TODO: 점수 내림차순 정렬</span>`,
+        answer: `<span class="kw">record</span> <span class="cl">Student</span>(String name, <span class="kw">int</span> score) {}
+
+List&lt;<span class="cl">Student</span>&gt; students = <span class="kw">new</span> ArrayList&lt;&gt;(List.<span class="fn">of</span>(
+    <span class="kw">new</span> <span class="cl">Student</span>(<span class="str">"A"</span>, <span class="num">85</span>),
+    <span class="kw">new</span> <span class="cl">Student</span>(<span class="str">"B"</span>, <span class="num">92</span>),
+    <span class="kw">new</span> <span class="cl">Student</span>(<span class="str">"C"</span>, <span class="num">78</span>)
+));
+
+<span class="cm">// Comparator로 점수 내림차순</span>
+students.<span class="fn">sort</span>(Comparator.<span class="fn">comparingInt</span>(<span class="cl">Student</span>::score).<span class="fn">reversed</span>());
+
+students.<span class="fn">forEach</span>(s -> System.out.println(s.name() + <span class="str">": "</span> + s.score()));`,
+        output: 'B: 92\nA: 85\nC: 78',
+        explain: `<h4>Comparable vs Comparator</h4>
+<ul>
+  <li><strong>Comparable</strong>: 클래스 자체에 <code>compareTo()</code> 구현 → 기본 정렬 순서 1개 정의</li>
+  <li><strong>Comparator</strong>: 외부에서 정렬 기준 제공 → 여러 기준을 유연하게 적용</li>
+  <li><code>comparingInt(...).reversed()</code>: 오름차순을 뒤집어 내림차순</li>
+  <li><code>thenComparing()</code>으로 2차 정렬 기준 추가 가능</li>
+</ul>`
+      }
+    ]
+  },
+
+  thread: {
+    title: 'Thread / 멀티스레딩',
+    level: 'Advanced',
+    badgeClass: 'badge-advanced',
+    keywords: ['Thread', 'Runnable', 'synchronized', 'ExecutorService'],
+    problems: [
+      {
+        title: '스레드 생성 두 가지 방법',
+        tags: ['Thread', 'Runnable', 'lambda'],
+        desc: 'Runnable을 구현하는 방식으로 스레드를 생성하고 실행하세요.',
+        code: `<span class="cm">// TODO: Runnable로 스레드 만들기</span>`,
+        answer: `<span class="cm">// 1. Runnable 람다로 생성 (권장)</span>
+Thread t1 = <span class="kw">new</span> Thread(() -> {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i < <span class="num">3</span>; i++)
+        System.out.println(<span class="str">"스레드 작업 "</span> + i);
+});
+t1.<span class="fn">start</span>();  <span class="cm">// run()이 아니라 start()!</span>
+
+<span class="cm">// 2. Thread 상속 (덜 권장 — 단일 상속 제약)</span>
+<span class="kw">class</span> <span class="cl">MyThread</span> <span class="kw">extends</span> Thread {
+    <span class="ann">@Override</span>
+    <span class="kw">public void</span> <span class="fn">run</span>() { System.out.println(<span class="str">"실행"</span>); }
+}`,
+        output: '스레드 작업 0\n스레드 작업 1\n스레드 작업 2',
+        explain: `<h4>start() vs run()</h4>
+<ul>
+  <li><code>start()</code>: 새 스레드를 생성하고 그 안에서 run() 실행 → 진짜 병렬</li>
+  <li><code>run()</code> 직접 호출: 그냥 현재 스레드에서 메서드 호출일 뿐 (병렬 X)</li>
+  <li>Runnable 방식이 권장됨: Java는 단일 상속이라 Thread 상속하면 다른 클래스 상속 불가</li>
+  <li>Runnable은 함수형 인터페이스라 람다로 간결하게 작성 가능</li>
+</ul>`
+      },
+      {
+        title: 'synchronized로 동시성 문제 해결',
+        tags: ['synchronized', 'race condition', 'thread-safe'],
+        desc: '여러 스레드가 동시에 카운터를 증가시킬 때 발생하는 race condition을 synchronized로 해결하세요.',
+        code: `<span class="kw">class</span> <span class="cl">Counter</span> {
+    <span class="kw">private int</span> count = <span class="num">0</span>;
+    <span class="cm">// TODO: thread-safe하게</span>
+}`,
+        answer: `<span class="kw">class</span> <span class="cl">Counter</span> {
+    <span class="kw">private int</span> count = <span class="num">0</span>;
+
+    <span class="cm">// synchronized: 한 번에 한 스레드만 진입 가능</span>
+    <span class="kw">public synchronized void</span> <span class="fn">increment</span>() {
+        count++;  <span class="cm">// 읽기→증가→쓰기가 원자적으로 처리됨</span>
+    }
+
+    <span class="kw">public synchronized int</span> <span class="fn">get</span>() {
+        <span class="kw">return</span> count;
+    }
+}
+
+<span class="cm">// synchronized 없으면: 1000개 스레드가 ++ 해도
+// 1000이 안 나올 수 있음 (값 덮어쓰기 = race condition)</span>`,
+        output: 'synchronized 적용 → 항상 정확한 카운트 보장',
+        explain: `<h4>Race Condition과 synchronized</h4>
+<ul>
+  <li><code>count++</code>는 사실 3단계(읽기→더하기→쓰기) → 도중에 다른 스레드가 끼어들면 값 손실</li>
+  <li><code>synchronized</code>: 해당 메서드/블록을 한 번에 한 스레드만 실행 (락 획득)</li>
+  <li>대안: <code>AtomicInteger</code>(락 없이 원자적 연산), <code>ReentrantLock</code>(더 유연한 제어)</li>
+  <li>과도한 synchronized는 성능 저하 → 꼭 필요한 부분만 최소 범위로</li>
+</ul>`
+      },
+      {
+        title: 'ExecutorService로 스레드 풀 관리',
+        tags: ['ExecutorService', 'thread pool', 'Future'],
+        desc: '스레드를 직접 만들지 않고 ExecutorService로 작업을 제출하고 결과를 받으세요.',
+        code: `<span class="cm">// TODO: ExecutorService 사용</span>`,
+        answer: `<span class="kw">import</span> java.util.concurrent.*;
+
+ExecutorService executor = Executors.<span class="fn">newFixedThreadPool</span>(<span class="num">3</span>);
+
+<span class="cm">// 결과를 받는 작업 제출</span>
+Future&lt;<span class="cl">Integer</span>&gt; future = executor.<span class="fn">submit</span>(() -> {
+    <span class="kw">int</span> sum = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i <= <span class="num">100</span>; i++) sum += i;
+    <span class="kw">return</span> sum;
+});
+
+System.out.println(future.<span class="fn">get</span>()); <span class="cm">// 5050 (결과 대기)</span>
+
+executor.<span class="fn">shutdown</span>(); <span class="cm">// 반드시 종료!</span>`,
+        output: '5050',
+        explain: `<h4>왜 ExecutorService인가?</h4>
+<ul>
+  <li>스레드를 매번 생성/소멸하는 비용을 줄이기 위해 스레드 풀에서 재사용합니다.</li>
+  <li><code>submit()</code>: 작업 제출, <code>Future</code>로 결과를 나중에 받음</li>
+  <li><code>future.get()</code>: 작업 완료까지 대기 후 결과 반환</li>
+  <li><code>shutdown()</code> 필수: 안 하면 프로그램이 종료되지 않습니다.</li>
+  <li>Java 21+ 가상 스레드: <code>Executors.newVirtualThreadPerTaskExecutor()</code></li>
+</ul>`
+      }
+    ]
   }
+
 };
 
 // ════════════════════════════════════════════════
