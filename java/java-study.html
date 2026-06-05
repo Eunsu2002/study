@@ -1,0 +1,2374 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Java 실습 문제집</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f8fa;
+    --bg2: #ffffff;
+    --bg3: #eef1f4;
+    --border: #d8dee4;
+    --text: #1f2328;
+    --text2: #57606a;
+    --text3: #8c959f;
+    --accent: #0969da;
+    --accent2: #0969da;
+    --green: #1a7f37;
+    --green-bg: #dafbe1;
+    --red: #cf222e;
+    --red-bg: #ffebe9;
+    --yellow: #9a6700;
+    --yellow-bg: #fff8c5;
+    --purple: #8250df;
+    --purple-bg: #f3eefe;
+    --teal: #1a7f37;
+    --orange: #bc4c00;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Pretendard', -apple-system, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+  }
+
+  /* ── Sidebar ── */
+  #sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow: hidden;
+  }
+
+  .sidebar-header {
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--accent2), var(--purple));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .logo-text {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+
+  .logo-sub {
+    font-size: 11px;
+    color: var(--text3);
+    font-weight: 400;
+  }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 7px 10px;
+  }
+
+  .search-box input {
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 13px;
+    width: 100%;
+  }
+
+  .search-box input::placeholder { color: var(--text3); }
+
+  .search-icon { color: var(--text3); font-size: 14px; flex-shrink: 0; }
+
+  .sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 0;
+  }
+
+  .sidebar-nav::-webkit-scrollbar { width: 3px; }
+  .sidebar-nav::-webkit-scrollbar-track { background: transparent; }
+  .sidebar-nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .nav-section {
+    padding: 0 8px 4px;
+  }
+
+  .nav-section-title {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text3);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 12px 8px 4px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text2);
+    transition: all 0.15s;
+    position: relative;
+  }
+
+  .nav-item:hover { background: var(--bg3); color: var(--text); }
+
+  .nav-item.active {
+    background: rgba(88, 166, 255, 0.12);
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .nav-badge {
+    margin-left: auto;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text3);
+    font-size: 10px;
+    font-family: var(--mono);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  .level-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .dot-beginner { background: var(--green); }
+  .dot-basic { background: var(--accent); }
+  .dot-intermediate { background: var(--purple); }
+  .dot-advanced { background: var(--orange); }
+  .dot-jdbc { background: var(--yellow); }
+
+  .sidebar-footer {
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text3);
+    flex-shrink: 0;
+  }
+
+  .progress-bar-wrap {
+    height: 3px;
+    background: var(--bg3);
+    border-radius: 3px;
+    margin-top: 6px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent2), var(--purple));
+    border-radius: 3px;
+    transition: width 0.3s;
+  }
+
+  /* ── Main Content ── */
+  #main {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .main-header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .main-header h1 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .main-header p {
+    font-size: 13px;
+    color: var(--text2);
+    margin-top: 2px;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .level-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-family: var(--mono);
+  }
+
+  .badge-beginner { background: var(--green-bg); color: var(--green); border: 1px solid rgba(63,185,80,0.25); }
+  .badge-basic { background: rgba(88,166,255,0.1); color: var(--accent); border: 1px solid rgba(88,166,255,0.25); }
+  .badge-intermediate { background: var(--purple-bg); color: var(--purple); border: 1px solid rgba(188,140,255,0.25); }
+  .badge-advanced { background: rgba(255,166,87,0.1); color: var(--orange); border: 1px solid rgba(255,166,87,0.25); }
+  .badge-jdbc { background: var(--yellow-bg); color: var(--yellow); border: 1px solid rgba(227,179,65,0.25); }
+
+  /* ── Content Area ── */
+  #content {
+    padding: 32px;
+    max-width: 860px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  /* ── Topic Overview (Home) ── */
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+    margin-top: 4px;
+  }
+
+  .topic-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .topic-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-1px);
+  }
+
+  .topic-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .topic-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  .topic-card h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .topic-card p {
+    font-size: 11px;
+    color: var(--text3);
+    line-height: 1.5;
+  }
+
+  .topic-count {
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--text3);
+    font-family: var(--mono);
+  }
+
+  /* ── Problem Cards ── */
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .section-sub {
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 24px;
+  }
+
+  .problem-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    transition: border-color 0.15s;
+  }
+
+  .problem-card:hover { border-color: #444c56; }
+
+  .problem-header {
+    padding: 16px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .problem-num {
+    width: 28px;
+    height: 28px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text2);
+    flex-shrink: 0;
+  }
+
+  .problem-title {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.5;
+    padding-top: 4px;
+  }
+
+  .problem-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+
+  .tag {
+    font-size: 10px;
+    font-family: var(--mono);
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text3);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .expand-btn {
+    background: none;
+    border: none;
+    color: var(--text3);
+    cursor: pointer;
+    font-size: 18px;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.15s;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .expand-btn:hover { color: var(--text); background: var(--bg3); }
+
+  .problem-body {
+    display: none;
+    border-top: 1px solid var(--border);
+  }
+
+  .problem-body.open { display: block; }
+
+  .problem-desc {
+    padding: 16px 20px;
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.7;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .problem-desc code {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  /* Code Block */
+  .code-block {
+    position: relative;
+    background: #f6f8fa;
+    border-top: 1px solid var(--border);
+  }
+
+  .code-block-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .code-block-label {
+    font-size: 11px;
+    font-family: var(--mono);
+    color: var(--text3);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .code-block-label span {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .copy-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text3);
+    font-size: 11px;
+    font-family: var(--sans);
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .copy-btn:hover { color: var(--text); border-color: #444c56; }
+
+  pre {
+    padding: 16px 20px;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--text);
+  }
+
+  pre::-webkit-scrollbar { height: 4px; }
+  pre::-webkit-scrollbar-track { background: transparent; }
+  pre::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  /* Syntax Highlight (light theme) */
+  .kw { color: #cf222e; }
+  .ty { color: #953800; }
+  .str { color: #0a3069; }
+  .cm { color: #6e7781; font-style: italic; }
+  .num { color: #0550ae; }
+  .fn { color: #8250df; }
+  .cl { color: #953800; }
+  .ann { color: #9a6700; }
+  .op { color: #cf222e; }
+
+  /* Solution / Explanation Tabs */
+  .sol-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg3);
+  }
+
+  .sol-tab {
+    padding: 10px 16px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text3);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    margin-bottom: -1px;
+  }
+
+  .sol-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .sol-tab:hover:not(.active) { color: var(--text2); }
+
+  .sol-panel { display: none; }
+  .sol-panel.active { display: block; }
+
+  .explain-block {
+    padding: 16px 20px;
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.75;
+  }
+
+  .explain-block h4 {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin: 14px 0 6px;
+  }
+
+  .explain-block h4:first-child { margin-top: 0; }
+
+  .explain-block ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .explain-block ul li {
+    padding: 3px 0 3px 14px;
+    position: relative;
+  }
+
+  .explain-block ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 11px;
+  }
+
+  .explain-block code {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  .output-block {
+    background: var(--green-bg);
+    border: 1px solid rgba(26,127,55,0.25);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--green);
+  }
+
+  .output-label {
+    font-size: 10px;
+    color: var(--text3);
+    margin-bottom: 4px;
+    font-family: var(--sans);
+  }
+
+  .hint-box {
+    background: rgba(88,166,255,0.06);
+    border: 1px solid rgba(88,166,255,0.2);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin: 12px 0;
+    font-size: 12px;
+    color: var(--accent);
+    line-height: 1.6;
+  }
+
+  .hint-box strong { color: var(--accent); font-weight: 600; }
+
+  /* Show Answer Button */
+  .show-answer-wrap {
+    padding: 12px 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .show-answer-btn {
+    background: rgba(88,166,255,0.1);
+    border: 1px solid rgba(88,166,255,0.3);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 500;
+    font-family: var(--sans);
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .show-answer-btn:hover { background: rgba(88,166,255,0.18); }
+
+  .answer-hidden { display: none; }
+
+  /* Home */
+  .home-hero {
+    text-align: center;
+    padding: 40px 0 32px;
+  }
+
+  .home-hero h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+
+  .home-hero h1 span { color: var(--accent); }
+
+  .home-hero p {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto 24px;
+  }
+
+  .stats-row {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-bottom: 40px;
+  }
+
+  .stat-item { text-align: center; }
+
+  .stat-num {
+    font-size: 24px;
+    font-weight: 700;
+    font-family: var(--mono);
+    color: var(--text);
+    display: block;
+  }
+
+  .stat-label { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 12px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    #sidebar { display: none; }
+    #content { padding: 20px 16px; }
+    .main-header { padding: 16px 20px; }
+    .stats-row { gap: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ── -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">
+      <div class="logo-icon">{ }</div>
+      <div>
+        <div class="logo-text">Java Practice</div>
+        <div class="logo-sub">실습 문제집</div>
+      </div>
+    </div>
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" placeholder="주제 검색..." id="searchInput" oninput="filterNav()">
+    </div>
+  </div>
+
+  <div class="sidebar-nav" id="navList">
+    <div class="nav-section">
+      <div class="nav-section-title">Home</div>
+      <div class="nav-item active" onclick="showHome(this)">
+        <span>📚</span> 전체 목차
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-title">Beginner (1)</div>
+      <div class="nav-item" onclick="showTopic('primitive', this)">
+        <span class="level-dot dot-beginner"></span> Primitive Type &amp; 조건문
+        <span class="nav-badge">5</span>
+      </div>
+      <div class="nav-item" onclick="showTopic('control', this)">
+        <span class="level-dot dot-beginner"></span> for / while / break / continue
+        <span class="nav-badge">5</span>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-title">Beginner (2)</div>
+      <div class="nav-item" onclick="showTopic('nestedloop', this)">
+        <span class="level-dot dot-beginner"></span> Nested Loop
+        <span class="nav-badge">4</span>
+      </div>
+      <div class="nav-item" onclick="showTopic('array', this)">
+        <span class="level-dot dot-beginner"></span> Array
+        <span class="nav-badge">5</span>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-title">Basic</div>
+      <div class="nav-item" onclick="showTopic('class', this)">
+        <span class="level-dot dot-basic"></span> Class / Constructor / Method
+        <span class="nav-badge">5</span>
+      </div>
+      <div class="nav-item" onclick="showTopic('oop-basic', this)">
+        <span class="level-dot dot-basic"></span> this / new / static / Overloading
+        <span class="nav-badge">5</span>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-title">Intermediate</div>
+      <div class="nav-item" onclick="showTopic('encapsulation', this)">
+        <span class="level-dot dot-intermediate"></span> 캡슐화 / 접근제어자
+        <span class="nav-badge">5</span>
+      </div>
+      <div class="nav-item" onclick="showTopic('inheritance', this)">
+        <span class="level-dot dot-intermediate"></span> 상속 / 추상클래스 / 인터페이스
+        <span class="nav-badge">5</span>
+      </div>
+      <div class="nav-item" onclick="showTopic('polymorphism', this)">
+        <span class="level-dot dot-intermediate"></span> 다형성 / instanceof / 패턴매칭
+        <span class="nav-badge">4</span>
+      </div>
+      <div class="nav-item" onclick="showTopic('designpattern', this)">
+        <span class="level-dot dot-intermediate"></span> Design Pattern
+        <span class="nav-badge">4</span>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-title">Advanced</div>
+      <div class="nav-item" onclick="showTopic('jvm', this)">
+        <span class="level-dot dot-advanced"></span> JVM / GC / Class Loader
+        <span class="nav-badge">4</span>
+      </div>
+      <div class="nav-item" onclick="showTopic('string', this)">
+        <span class="level-dot dot-advanced"></span> String / StringBuilder / Buffer
+        <span class="nav-badge">4</span>
+      </div>
+      <div class="nav-item" onclick="showTopic('generics', this)">
+        <span class="level-dot dot-advanced"></span> Generics / Enum / Annotation
+        <span class="nav-badge">4</span>
+      </div>
+      <div class="nav-item" onclick="showTopic('exception', this)">
+        <span class="level-dot dot-advanced"></span> Exception 처리
+        <span class="nav-badge">5</span>
+      </div>
+      <div class="nav-item" onclick="showTopic('collection', this)">
+        <span class="level-dot dot-advanced"></span> Collection Framework
+        <span class="nav-badge">5</span>
+      </div>
+      <div class="nav-item" onclick="showTopic('lambda', this)">
+        <span class="level-dot dot-advanced"></span> Lambda / Stream / 함수형
+        <span class="nav-badge">5</span>
+      </div>
+      <div class="nav-item" onclick="showTopic('thread', this)">
+        <span class="level-dot dot-advanced"></span> Thread / 멀티스레딩
+        <span class="nav-badge">4</span>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-title">JDBC</div>
+      <div class="nav-item" onclick="showTopic('jdbc', this)">
+        <span class="level-dot dot-jdbc"></span> JDBC / Transaction / PreparedStatement
+        <span class="nav-badge">5</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <span id="progressText">0 / 74 완료</span>
+      <span style="color:var(--accent);font-size:11px;font-weight:600;" id="progressPct">0%</span>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
+    </div>
+  </div>
+</nav>
+
+<!-- ── MAIN ── -->
+<div id="main">
+  <div class="main-header">
+    <div>
+      <h1 id="headerTitle">Java 실습 문제집</h1>
+      <p id="headerSub">문제를 클릭하여 풀어보세요</p>
+    </div>
+    <div class="header-right">
+      <span class="level-badge badge-beginner" id="levelBadge" style="display:none"></span>
+    </div>
+  </div>
+
+  <div id="content"></div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════
+//  DATA
+// ════════════════════════════════════════════════
+const TOPICS = {
+
+  primitive: {
+    title: 'Primitive Type & 조건문 (if)',
+    level: 'Beginner',
+    badgeClass: 'badge-beginner',
+    keywords: ['int', 'double', 'boolean', 'char', 'if', 'else'],
+    problems: [
+      {
+        title: '두 정수의 최댓값 구하기',
+        tags: ['int', 'if-else'],
+        desc: '두 개의 정수 <code>a</code>, <code>b</code>를 입력받아 더 큰 값을 출력하는 메서드 <code>max(int a, int b)</code>를 작성하세요.',
+        code: `<span class="kw">public class</span> <span class="cl">Solution</span> {
+    <span class="kw">public static int</span> <span class="fn">max</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) {
+        <span class="cm">// TODO: 여기에 코드를 작성하세요</span>
+    }
+
+    <span class="kw">public static void</span> <span class="fn">main</span>(String[] args) {
+        System.out.println(max(<span class="num">10</span>, <span class="num">20</span>)); <span class="cm">// 20</span>
+        System.out.println(max(<span class="num">5</span>, <span class="num">3</span>));   <span class="cm">// 5</span>
+    }
+}`,
+        answer: `<span class="kw">public static int</span> <span class="fn">max</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) {
+    <span class="kw">if</span> (a >= b) {
+        <span class="kw">return</span> a;
+    } <span class="kw">else</span> {
+        <span class="kw">return</span> b;
+    }
+    <span class="cm">// 삼항 연산자: return a >= b ? a : b;</span>
+}`,
+        output: '20\n5',
+        explain: `<h4>핵심 개념</h4>
+<ul>
+  <li><code>if-else</code>는 조건이 참/거짓일 때 각각 다른 블록을 실행합니다.</li>
+  <li>비교 연산자 <code>>=</code>는 왼쪽이 오른쪽보다 크거나 같으면 <code>true</code>를 반환합니다.</li>
+</ul>
+<h4>삼항 연산자 (Ternary Operator)</h4>
+<p><code>조건 ? 참일 때 : 거짓일 때</code> 형태로 한 줄로 축약할 수 있습니다.</p>`
+      },
+      {
+        title: '양수/음수/0 판별기',
+        tags: ['int', 'if-else if-else'],
+        desc: '정수 <code>n</code>을 입력받아 양수면 "양수", 음수면 "음수", 0이면 "영"을 출력하는 메서드를 작성하세요.',
+        code: `<span class="kw">public static</span> String <span class="fn">classify</span>(<span class="kw">int</span> n) {
+    <span class="cm">// TODO</span>
+}`,
+        answer: `<span class="kw">public static</span> String <span class="fn">classify</span>(<span class="kw">int</span> n) {
+    <span class="kw">if</span> (n > <span class="num">0</span>) {
+        <span class="kw">return</span> <span class="str">"양수"</span>;
+    } <span class="kw">else if</span> (n < <span class="num">0</span>) {
+        <span class="kw">return</span> <span class="str">"음수"</span>;
+    } <span class="kw">else</span> {
+        <span class="kw">return</span> <span class="str">"영"</span>;
+    }
+}`,
+        output: '양수 / 음수 / 영',
+        explain: `<h4>else if 체인</h4>
+<ul>
+  <li>조건이 3개 이상일 때 <code>else if</code>를 연결해 사용합니다.</li>
+  <li>위에서부터 순서대로 평가되며, 참인 첫 번째 블록만 실행됩니다.</li>
+  <li>마지막 <code>else</code>는 모든 조건이 거짓일 때의 기본값 역할을 합니다.</li>
+</ul>`
+      },
+      {
+        title: '짝수 / 홀수 판별',
+        tags: ['int', 'if', '%'],
+        desc: '정수 <code>n</code>이 짝수인지 홀수인지 판별하는 메서드를 작성하세요. 짝수면 <code>true</code>, 홀수면 <code>false</code>를 반환합니다.',
+        code: `<span class="kw">public static boolean</span> <span class="fn">isEven</span>(<span class="kw">int</span> n) {
+    <span class="cm">// TODO</span>
+}`,
+        answer: `<span class="kw">public static boolean</span> <span class="fn">isEven</span>(<span class="kw">int</span> n) {
+    <span class="kw">return</span> n % <span class="num">2</span> == <span class="num">0</span>;
+}`,
+        output: 'true (n=4) / false (n=7)',
+        explain: `<h4>나머지 연산자 %</h4>
+<ul>
+  <li><code>n % 2</code>는 n을 2로 나눈 나머지를 반환합니다.</li>
+  <li>짝수는 2로 나누면 나머지가 0이므로 <code>n % 2 == 0</code>이 참입니다.</li>
+  <li>비교 연산 <code>==</code>의 결과가 이미 <code>boolean</code>이므로 별도의 if 없이 바로 반환 가능합니다.</li>
+</ul>`
+      },
+      {
+        title: '세 수 중 최솟값',
+        tags: ['int', 'if-else if'],
+        desc: '세 개의 정수 a, b, c를 받아 가장 작은 값을 반환하는 메서드를 작성하세요.',
+        code: `<span class="kw">public static int</span> <span class="fn">min3</span>(<span class="kw">int</span> a, <span class="kw">int</span> b, <span class="kw">int</span> c) {
+    <span class="cm">// TODO</span>
+}`,
+        answer: `<span class="kw">public static int</span> <span class="fn">min3</span>(<span class="kw">int</span> a, <span class="kw">int</span> b, <span class="kw">int</span> c) {
+    <span class="kw">int</span> min = a;
+    <span class="kw">if</span> (b < min) min = b;
+    <span class="kw">if</span> (c < min) min = c;
+    <span class="kw">return</span> min;
+}`,
+        output: '3 (a=5, b=3, c=7)',
+        explain: `<h4>단계적 비교 전략</h4>
+<ul>
+  <li>첫 번째 값을 기준(<code>min</code>)으로 설정합니다.</li>
+  <li>이후 값과 하나씩 비교하여 더 작으면 <code>min</code>을 교체합니다.</li>
+  <li>이 패턴은 N개의 값으로 쉽게 확장됩니다.</li>
+</ul>
+<p>Java 내장: <code>Math.min(Math.min(a, b), c)</code>로도 가능합니다.</p>`
+      },
+      {
+        title: '학점 계산기',
+        tags: ['int', 'if-else if', 'char'],
+        desc: '점수(0~100)를 입력받아 90 이상 A, 80 이상 B, 70 이상 C, 60 이상 D, 나머지 F를 반환하는 메서드를 작성하세요.',
+        code: `<span class="kw">public static char</span> <span class="fn">grade</span>(<span class="kw">int</span> score) {
+    <span class="cm">// TODO</span>
+}`,
+        answer: `<span class="kw">public static char</span> <span class="fn">grade</span>(<span class="kw">int</span> score) {
+    <span class="kw">if</span> (score >= <span class="num">90</span>) <span class="kw">return</span> <span class="str">'A'</span>;
+    <span class="kw">else if</span> (score >= <span class="num">80</span>) <span class="kw">return</span> <span class="str">'B'</span>;
+    <span class="kw">else if</span> (score >= <span class="num">70</span>) <span class="kw">return</span> <span class="str">'C'</span>;
+    <span class="kw">else if</span> (score >= <span class="num">60</span>) <span class="kw">return</span> <span class="str">'D'</span>;
+    <span class="kw">else</span> <span class="kw">return</span> <span class="str">'F'</span>;
+}`,
+        output: `grade(95) → A\ngrade(73) → C\ngrade(55) → F`,
+        explain: `<h4>범위 비교의 순서 주의</h4>
+<ul>
+  <li>높은 기준부터 내려오는 순서로 작성합니다. (<code>>= 90</code> → <code>>= 80</code> → ...)</li>
+  <li><code>else if</code>는 앞 조건이 이미 거짓임을 전제하므로, <code>score >= 80</code>은 실질적으로 <code>80 &lt;= score &lt; 90</code>의미입니다.</li>
+  <li><code>char</code> 리터럴은 작은따옴표 <code>'A'</code>로 표기합니다.</li>
+</ul>`
+      }
+    ]
+  },
+
+  control: {
+    title: 'for / while / break / continue',
+    level: 'Beginner',
+    badgeClass: 'badge-beginner',
+    keywords: ['for', 'while', 'break', 'continue'],
+    problems: [
+      {
+        title: '1부터 N까지 합',
+        tags: ['for', 'int'],
+        desc: '정수 <code>n</code>을 받아 1부터 n까지의 합을 반환하는 메서드를 <code>for</code> 반복문으로 작성하세요.',
+        code: `<span class="kw">public static int</span> <span class="fn">sum</span>(<span class="kw">int</span> n) {
+    <span class="cm">// TODO</span>
+}`,
+        answer: `<span class="kw">public static int</span> <span class="fn">sum</span>(<span class="kw">int</span> n) {
+    <span class="kw">int</span> total = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i <= n; i++) {
+        total += i;
+    }
+    <span class="kw">return</span> total;
+    <span class="cm">// 수학 공식: return n * (n + 1) / 2;</span>
+}`,
+        output: 'sum(10) → 55\nsum(100) → 5050',
+        explain: `<h4>for 반복문 구조</h4>
+<p><code>for (초기화; 조건; 증감)</code> 형태입니다.</p>
+<ul>
+  <li>초기화: <code>int i = 1</code> — 루프 변수를 1로 시작</li>
+  <li>조건: <code>i <= n</code> — i가 n 이하인 동안 반복</li>
+  <li>증감: <code>i++</code> — 매 반복 후 i를 1 증가</li>
+</ul>
+<h4>수학적 공식 (가우스)</h4>
+<p><code>n*(n+1)/2</code> — 반복 없이 O(1) 시간에 계산 가능합니다.</p>`
+      },
+      {
+        title: '짝수만 합산하기',
+        tags: ['for', 'continue', '%'],
+        desc: '1부터 100까지 반복하면서 <code>continue</code>를 사용해 홀수는 건너뛰고 짝수의 합만 반환하세요.',
+        code: `<span class="kw">public static int</span> <span class="fn">sumEven</span>() {
+    <span class="kw">int</span> total = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i <= <span class="num">100</span>; i++) {
+        <span class="cm">// TODO: 홀수는 continue로 건너뛰기</span>
+        total += i;
+    }
+    <span class="kw">return</span> total;
+}`,
+        answer: `<span class="kw">public static int</span> <span class="fn">sumEven</span>() {
+    <span class="kw">int</span> total = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i <= <span class="num">100</span>; i++) {
+        <span class="kw">if</span> (i % <span class="num">2</span> != <span class="num">0</span>) <span class="kw">continue</span>; <span class="cm">// 홀수 건너뛰기</span>
+        total += i;
+    }
+    <span class="kw">return</span> total; <span class="cm">// 2550</span>
+}`,
+        output: '2550',
+        explain: `<h4>continue 동작</h4>
+<ul>
+  <li><code>continue</code>를 만나면 현재 반복의 남은 코드를 건너뛰고 다음 반복(증감 → 조건 평가)으로 즉시 이동합니다.</li>
+  <li>홀수(<code>i % 2 != 0</code>)를 만나면 <code>total += i</code>를 실행하지 않고 다음 i로 넘어갑니다.</li>
+</ul>`
+      },
+      {
+        title: '소수 판별기',
+        tags: ['for', 'break', 'boolean'],
+        desc: '정수 <code>n</code>이 소수인지 판별하는 메서드를 작성하세요. 소수면 <code>true</code>를 반환합니다.',
+        code: `<span class="kw">public static boolean</span> <span class="fn">isPrime</span>(<span class="kw">int</span> n) {
+    <span class="cm">// TODO</span>
+}`,
+        answer: `<span class="kw">public static boolean</span> <span class="fn">isPrime</span>(<span class="kw">int</span> n) {
+    <span class="kw">if</span> (n < <span class="num">2</span>) <span class="kw">return false</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">2</span>; i <= Math.sqrt(n); i++) {
+        <span class="kw">if</span> (n % i == <span class="num">0</span>) <span class="kw">return false</span>; <span class="cm">// 나누어 떨어지면 소수 아님</span>
+    }
+    <span class="kw">return true</span>;
+}`,
+        output: 'isPrime(7) → true\nisPrime(4) → false\nisPrime(1) → false',
+        explain: `<h4>소수 판별 알고리즘</h4>
+<ul>
+  <li>2 미만은 소수가 아닙니다.</li>
+  <li>2부터 √n까지만 확인하면 됩니다. 약수는 쌍으로 존재하므로, √n 이하의 약수가 없으면 √n 이상에도 없습니다.</li>
+  <li><code>Math.sqrt(n)</code> 대신 <code>i * i &lt;= n</code> 조건을 사용하면 정수 연산만으로 처리 가능합니다.</li>
+</ul>`
+      },
+      {
+        title: 'while + 사용자 입력 시뮬레이션',
+        tags: ['while', 'break'],
+        desc: '배열 <code>{3, 7, -1, 5, 9}</code>를 순서대로 처리하면서 음수를 만나면 즉시 멈추고, 그때까지의 합을 반환하세요.',
+        code: `<span class="kw">public static int</span> <span class="fn">sumUntilNegative</span>(<span class="kw">int</span>[] nums) {
+    <span class="cm">// TODO: while + break 사용</span>
+}`,
+        answer: `<span class="kw">public static int</span> <span class="fn">sumUntilNegative</span>(<span class="kw">int</span>[] nums) {
+    <span class="kw">int</span> sum = <span class="num">0</span>;
+    <span class="kw">int</span> i = <span class="num">0</span>;
+    <span class="kw">while</span> (i < nums.length) {
+        <span class="kw">if</span> (nums[i] < <span class="num">0</span>) <span class="kw">break</span>;
+        sum += nums[i];
+        i++;
+    }
+    <span class="kw">return</span> sum;
+}`,
+        output: 'sumUntilNegative({3,7,-1,5,9}) → 10',
+        explain: `<h4>break 동작</h4>
+<ul>
+  <li><code>break</code>는 현재 반복문을 즉시 탈출합니다.</li>
+  <li>3 + 7 = 10 이후 -1을 만나 break → 5, 9는 처리되지 않습니다.</li>
+</ul>
+<h4>while vs for</h4>
+<p>반복 횟수를 미리 알 수 없을 때, 또는 조건 중심 반복에 <code>while</code>이 자연스럽습니다.</p>`
+      },
+      {
+        title: 'do-while로 구구단 출력',
+        tags: ['do-while', 'int'],
+        desc: '정수 <code>n</code>의 구구단(1단부터 9단까지)을 <code>do-while</code>로 출력하는 메서드를 작성하세요.',
+        code: `<span class="kw">public static void</span> <span class="fn">gugudan</span>(<span class="kw">int</span> n) {
+    <span class="cm">// TODO: do-while 사용</span>
+}`,
+        answer: `<span class="kw">public static void</span> <span class="fn">gugudan</span>(<span class="kw">int</span> n) {
+    <span class="kw">int</span> i = <span class="num">1</span>;
+    <span class="kw">do</span> {
+        System.out.printf(<span class="str">"%d x %d = %d%n"</span>, n, i, n * i);
+        i++;
+    } <span class="kw">while</span> (i <= <span class="num">9</span>);
+}`,
+        output: '5 x 1 = 5\n5 x 2 = 10\n...\n5 x 9 = 45',
+        explain: `<h4>do-while 특징</h4>
+<ul>
+  <li>블록을 먼저 실행한 후 조건을 평가합니다 → 최소 1번은 반드시 실행됩니다.</li>
+  <li><code>while</code>은 조건이 처음부터 거짓이면 한 번도 실행되지 않지만, <code>do-while</code>은 항상 1번 실행됩니다.</li>
+  <li><code>printf("%d x %d = %d%n", ...)</code>: <code>%n</code>은 플랫폼 독립적인 개행입니다.</li>
+</ul>`
+      }
+    ]
+  },
+
+  class: {
+    title: 'Class / Constructor / Method / Field',
+    level: 'Basic',
+    badgeClass: 'badge-basic',
+    keywords: ['class', 'constructor', 'field', 'method', 'new'],
+    problems: [
+      {
+        title: '은행 계좌 클래스 만들기',
+        tags: ['class', 'field', 'method'],
+        desc: '잔액(<code>balance</code>)을 가진 <code>BankAccount</code> 클래스를 만드세요. 입금(<code>deposit</code>), 출금(<code>withdraw</code>), 잔액조회(<code>getBalance</code>) 메서드를 구현하세요.',
+        code: `<span class="kw">public class</span> <span class="cl">BankAccount</span> {
+    <span class="cm">// TODO: field, constructor, methods</span>
+}
+
+<span class="cm">// 사용 예시</span>
+BankAccount acc = <span class="kw">new</span> <span class="fn">BankAccount</span>(<span class="num">1000</span>);
+acc.<span class="fn">deposit</span>(<span class="num">500</span>);
+acc.<span class="fn">withdraw</span>(<span class="num">200</span>);
+System.out.println(acc.<span class="fn">getBalance</span>()); <span class="cm">// 1300</span>`,
+        answer: `<span class="kw">public class</span> <span class="cl">BankAccount</span> {
+    <span class="kw">private double</span> balance;
+
+    <span class="kw">public</span> <span class="fn">BankAccount</span>(<span class="kw">double</span> initialBalance) {
+        <span class="kw">this</span>.balance = initialBalance;
+    }
+
+    <span class="kw">public void</span> <span class="fn">deposit</span>(<span class="kw">double</span> amount) {
+        <span class="kw">if</span> (amount > <span class="num">0</span>) balance += amount;
+    }
+
+    <span class="kw">public boolean</span> <span class="fn">withdraw</span>(<span class="kw">double</span> amount) {
+        <span class="kw">if</span> (amount > <span class="num">0</span> && balance >= amount) {
+            balance -= amount;
+            <span class="kw">return true</span>;
+        }
+        <span class="kw">return false</span>; <span class="cm">// 잔액 부족</span>
+    }
+
+    <span class="kw">public double</span> <span class="fn">getBalance</span>() {
+        <span class="kw">return</span> balance;
+    }
+}`,
+        output: '1300.0',
+        explain: `<h4>클래스 구성요소</h4>
+<ul>
+  <li><strong>필드(Field)</strong>: 클래스가 보유한 데이터. <code>private double balance</code></li>
+  <li><strong>생성자(Constructor)</strong>: 객체 생성 시 호출. 클래스명과 동일하며 반환 타입 없음</li>
+  <li><strong>메서드(Method)</strong>: 객체가 수행하는 동작. <code>deposit</code>, <code>withdraw</code></li>
+  <li><code>this.balance</code>: 매개변수와 필드 이름이 같을 때 <code>this</code>로 필드를 명시</li>
+</ul>`
+      },
+      {
+        title: '원(Circle) 클래스 — 면적과 둘레',
+        tags: ['class', 'Math.PI', 'double'],
+        desc: '반지름(<code>radius</code>)을 가진 <code>Circle</code> 클래스를 만들고 면적(<code>area</code>)과 둘레(<code>perimeter</code>)를 반환하는 메서드를 구현하세요.',
+        code: `<span class="kw">public class</span> <span class="cl">Circle</span> {
+    <span class="cm">// TODO</span>
+}`,
+        answer: `<span class="kw">public class</span> <span class="cl">Circle</span> {
+    <span class="kw">private final double</span> radius;
+
+    <span class="kw">public</span> <span class="fn">Circle</span>(<span class="kw">double</span> radius) {
+        <span class="kw">this</span>.radius = radius;
+    }
+
+    <span class="kw">public double</span> <span class="fn">area</span>() {
+        <span class="kw">return</span> Math.PI * radius * radius;
+    }
+
+    <span class="kw">public double</span> <span class="fn">perimeter</span>() {
+        <span class="kw">return</span> <span class="num">2</span> * Math.PI * radius;
+    }
+
+    <span class="ann">@Override</span>
+    <span class="kw">public</span> String <span class="fn">toString</span>() {
+        <span class="kw">return</span> String.<span class="fn">format</span>(<span class="str">"Circle(r=%.1f)"</span>, radius);
+    }
+}`,
+        output: 'area(5) → 78.54\nperimeter(5) → 31.42',
+        explain: `<h4>주요 포인트</h4>
+<ul>
+  <li><code>Math.PI</code>: Java에서 제공하는 π 상수 (3.14159...)</li>
+  <li><code>final</code> 필드: 한 번 할당되면 변경 불가. 반지름은 불변이므로 <code>final</code>이 적절</li>
+  <li><code>toString()</code> 오버라이드: <code>System.out.println(circle)</code>시 자동 호출</li>
+</ul>`
+      },
+      {
+        title: '학생 클래스와 평균 계산',
+        tags: ['class', 'array', 'double'],
+        desc: '이름과 점수 배열을 가진 <code>Student</code> 클래스를 만들고, 평균(<code>average</code>)과 최고 점수(<code>maxScore</code>)를 반환하는 메서드를 구현하세요.',
+        code: `<span class="kw">public class</span> <span class="cl">Student</span> {
+    String name;
+    <span class="kw">int</span>[] scores;
+    <span class="cm">// TODO: constructor, average(), maxScore()</span>
+}`,
+        answer: `<span class="kw">public class</span> <span class="cl">Student</span> {
+    String name;
+    <span class="kw">int</span>[] scores;
+
+    <span class="kw">public</span> <span class="fn">Student</span>(String name, <span class="kw">int</span>[] scores) {
+        <span class="kw">this</span>.name = name;
+        <span class="kw">this</span>.scores = scores;
+    }
+
+    <span class="kw">public double</span> <span class="fn">average</span>() {
+        <span class="kw">int</span> sum = <span class="num">0</span>;
+        <span class="kw">for</span> (<span class="kw">int</span> s : scores) sum += s;
+        <span class="kw">return</span> (<span class="kw">double</span>) sum / scores.length;
+    }
+
+    <span class="kw">public int</span> <span class="fn">maxScore</span>() {
+        <span class="kw">int</span> max = scores[<span class="num">0</span>];
+        <span class="kw">for</span> (<span class="kw">int</span> s : scores)
+            <span class="kw">if</span> (s > max) max = s;
+        <span class="kw">return</span> max;
+    }
+}`,
+        output: '평균: 85.0 / 최고: 95',
+        explain: `<h4>향상된 for문 (Enhanced for)</h4>
+<p><code>for (int s : scores)</code> — 배열의 모든 요소를 순서대로 <code>s</code>에 담아 반복합니다. 인덱스가 필요 없을 때 간결하게 사용합니다.</p>
+<h4>정수 나눗셈 주의</h4>
+<p><code>sum / scores.length</code>는 정수 나눗셈 → <code>(double) sum / scores.length</code>으로 캐스팅해야 소수점이 유지됩니다.</p>`
+      },
+      {
+        title: 'Counter 클래스 — 인스턴스 vs static',
+        tags: ['class', 'static', 'instance'],
+        desc: '<code>Counter</code> 클래스를 만드세요. 인스턴스별로 개수를 세는 <code>count</code>와, 전체 Counter 생성 횟수를 세는 <code>static totalCreated</code>를 구현하세요.',
+        code: `<span class="kw">public class</span> <span class="cl">Counter</span> {
+    <span class="cm">// TODO</span>
+}
+
+Counter c1 = <span class="kw">new</span> <span class="fn">Counter</span>();
+Counter c2 = <span class="kw">new</span> <span class="fn">Counter</span>();
+c1.<span class="fn">increment</span>(); c1.<span class="fn">increment</span>();
+c2.<span class="fn">increment</span>();
+System.out.println(c1.count);            <span class="cm">// 2</span>
+System.out.println(c2.count);            <span class="cm">// 1</span>
+System.out.println(Counter.totalCreated);<span class="cm">// 2</span>`,
+        answer: `<span class="kw">public class</span> <span class="cl">Counter</span> {
+    <span class="kw">public int</span> count = <span class="num">0</span>;
+    <span class="kw">public static int</span> totalCreated = <span class="num">0</span>;
+
+    <span class="kw">public</span> <span class="fn">Counter</span>() {
+        totalCreated++;
+    }
+
+    <span class="kw">public void</span> <span class="fn">increment</span>() {
+        count++;
+    }
+
+    <span class="kw">public void</span> <span class="fn">reset</span>() {
+        count = <span class="num">0</span>;
+    }
+}`,
+        output: '2 / 1 / 2',
+        explain: `<h4>인스턴스 변수 vs static 변수</h4>
+<ul>
+  <li><strong>인스턴스 변수</strong>(<code>count</code>): 각 객체마다 별도로 존재. c1.count와 c2.count는 독립적입니다.</li>
+  <li><strong>static 변수</strong>(<code>totalCreated</code>): 모든 인스턴스가 공유하는 단 하나의 값. 클래스명으로 접근(<code>Counter.totalCreated</code>)합니다.</li>
+</ul>`
+      },
+      {
+        title: '메서드 오버로딩 — 넓이 계산기',
+        tags: ['overloading', 'double', 'int'],
+        desc: '같은 이름 <code>area</code>로 정사각형(변 1개), 직사각형(변 2개), 삼각형(밑변+높이) 넓이를 각각 반환하는 오버로딩 메서드를 작성하세요.',
+        code: `<span class="kw">public class</span> <span class="cl">AreaCalculator</span> {
+    <span class="cm">// TODO: area() 메서드 3개 오버로딩</span>
+}`,
+        answer: `<span class="kw">public class</span> <span class="cl">AreaCalculator</span> {
+    <span class="cm">// 정사각형</span>
+    <span class="kw">public static double</span> <span class="fn">area</span>(<span class="kw">double</span> side) {
+        <span class="kw">return</span> side * side;
+    }
+
+    <span class="cm">// 직사각형</span>
+    <span class="kw">public static double</span> <span class="fn">area</span>(<span class="kw">double</span> width, <span class="kw">double</span> height) {
+        <span class="kw">return</span> width * height;
+    }
+
+    <span class="cm">// 삼각형 (밑변, 높이, 구분용 boolean)</span>
+    <span class="kw">public static double</span> <span class="fn">area</span>(<span class="kw">double</span> base, <span class="kw">double</span> height, <span class="kw">boolean</span> isTriangle) {
+        <span class="kw">return</span> isTriangle ? base * height / <span class="num">2</span> : base * height;
+    }
+}`,
+        output: 'area(4) → 16.0\narea(3,5) → 15.0\narea(6,4,true) → 12.0',
+        explain: `<h4>오버로딩(Overloading) 규칙</h4>
+<ul>
+  <li>같은 클래스 안에서 <strong>같은 이름</strong>의 메서드를 여러 개 정의할 수 있습니다.</li>
+  <li>단, <strong>매개변수의 타입, 개수, 순서</strong>가 달라야 구분됩니다.</li>
+  <li>반환 타입만 다른 것은 오버로딩이 아닙니다 (컴파일 오류).</li>
+  <li>컴파일 시점에 어느 메서드를 호출할지 결정됩니다 (정적 바인딩).</li>
+</ul>`
+      }
+    ]
+  },
+
+  encapsulation: {
+    title: '캡슐화 / 접근제어자 / Java Bean',
+    level: 'Intermediate',
+    badgeClass: 'badge-intermediate',
+    keywords: ['private', 'public', 'protected', 'getter', 'setter', 'record'],
+    problems: [
+      {
+        title: 'Person Java Bean 만들기',
+        tags: ['private', 'getter', 'setter', 'JavaBean'],
+        desc: '<code>name</code>(String), <code>age</code>(int) 필드를 <code>private</code>으로 선언하고, getter/setter를 구현하세요. setter에서 age가 음수면 예외를 던지세요.',
+        code: `<span class="kw">public class</span> <span class="cl">Person</span> {
+    <span class="cm">// TODO: private fields, getters, setters</span>
+}`,
+        answer: `<span class="kw">public class</span> <span class="cl">Person</span> {
+    <span class="kw">private</span> String name;
+    <span class="kw">private int</span> age;
+
+    <span class="kw">public</span> <span class="fn">Person</span>() {}
+
+    <span class="kw">public</span> <span class="fn">Person</span>(String name, <span class="kw">int</span> age) {
+        <span class="kw">this</span>.name = name;
+        <span class="fn">setAge</span>(age); <span class="cm">// setter를 통해 유효성 검사</span>
+    }
+
+    <span class="kw">public</span> String <span class="fn">getName</span>() { <span class="kw">return</span> name; }
+    <span class="kw">public void</span> <span class="fn">setName</span>(String name) { <span class="kw">this</span>.name = name; }
+
+    <span class="kw">public int</span> <span class="fn">getAge</span>() { <span class="kw">return</span> age; }
+    <span class="kw">public void</span> <span class="fn">setAge</span>(<span class="kw">int</span> age) {
+        <span class="kw">if</span> (age < <span class="num">0</span>)
+            <span class="kw">throw new</span> <span class="cl">IllegalArgumentException</span>(<span class="str">"나이는 0 이상이어야 합니다."</span>);
+        <span class="kw">this</span>.age = age;
+    }
+}`,
+        output: 'getName() → "Alice"\ngetAge() → 25',
+        explain: `<h4>캡슐화의 이점</h4>
+<ul>
+  <li>필드를 <code>private</code>으로 숨겨 외부에서 직접 접근 불가 → 데이터 보호</li>
+  <li>setter에 유효성 검사 로직을 집중 → 잘못된 값 차단</li>
+  <li>내부 구현 변경 시 외부 코드에 영향 없음 (낮은 결합도)</li>
+</ul>
+<h4>Java Bean 규약</h4>
+<ul>
+  <li>기본 생성자(no-arg constructor) 필수</li>
+  <li>필드는 <code>private</code>, 접근은 <code>getXxx()</code> / <code>setXxx()</code></li>
+  <li>boolean 필드는 <code>isXxx()</code></li>
+</ul>`
+      },
+      {
+        title: 'Record 클래스 — 불변 데이터',
+        tags: ['record', 'Java 16+'],
+        desc: '<code>Point</code> record를 정의하고, 두 Point 사이의 거리를 계산하는 메서드를 추가하세요.',
+        code: `<span class="cm">// record로 Point 정의</span>
+<span class="kw">public record</span> <span class="cl">Point</span>(<span class="kw">double</span> x, <span class="kw">double</span> y) {
+    <span class="cm">// TODO: distanceTo 메서드 추가</span>
+}`,
+        answer: `<span class="kw">public record</span> <span class="cl">Point</span>(<span class="kw">double</span> x, <span class="kw">double</span> y) {
+
+    <span class="cm">// compact constructor — 유효성 검사</span>
+    <span class="kw">public</span> <span class="fn">Point</span> {
+        <span class="kw">if</span> (Double.<span class="fn">isNaN</span>(x) || Double.<span class="fn">isNaN</span>(y))
+            <span class="kw">throw new</span> <span class="cl">IllegalArgumentException</span>(<span class="str">"좌표는 NaN일 수 없습니다."</span>);
+    }
+
+    <span class="kw">public double</span> <span class="fn">distanceTo</span>(<span class="cl">Point</span> other) {
+        <span class="kw">double</span> dx = <span class="kw">this</span>.x - other.x;
+        <span class="kw">double</span> dy = <span class="kw">this</span>.y - other.y;
+        <span class="kw">return</span> Math.<span class="fn">sqrt</span>(dx * dx + dy * dy);
+    }
+}
+
+<span class="cm">// 사용</span>
+<span class="cl">Point</span> p1 = <span class="kw">new</span> <span class="cl">Point</span>(<span class="num">0</span>, <span class="num">0</span>);
+<span class="cl">Point</span> p2 = <span class="kw">new</span> <span class="cl">Point</span>(<span class="num">3</span>, <span class="num">4</span>);
+System.out.println(p1.<span class="fn">distanceTo</span>(p2)); <span class="cm">// 5.0</span>`,
+        output: 'p1.distanceTo(p2) → 5.0',
+        explain: `<h4>Record (Java 16+)</h4>
+<ul>
+  <li>불변(immutable) 데이터 클래스를 간결하게 선언하는 방법입니다.</li>
+  <li>컴파일러가 자동 생성: <code>getter</code>, <code>equals</code>, <code>hashCode</code>, <code>toString</code></li>
+  <li>getter는 <code>getX()</code>가 아닌 <code>x()</code> 형태입니다.</li>
+  <li>compact constructor: 중괄호 안에 유효성 검사만 작성, 할당은 자동</li>
+</ul>`
+      },
+      {
+        title: 'package-private 접근 제어',
+        tags: ['package', 'protected', 'access modifier'],
+        desc: '같은 패키지의 클래스에서만 접근 가능한 필드와 메서드를 활용하는 <code>Employee</code> 클래스를 설계하세요. 접근 제어자 4종을 모두 활용하세요.',
+        code: `<span class="kw">package</span> com.company.hr;
+
+<span class="kw">public class</span> <span class="cl">Employee</span> {
+    <span class="cm">// TODO: public, protected, default, private 필드/메서드 각각 1개씩</span>
+}`,
+        answer: `<span class="kw">package</span> com.company.hr;
+
+<span class="kw">public class</span> <span class="cl">Employee</span> {
+    <span class="kw">public</span>    String name;         <span class="cm">// 어디서나 접근</span>
+    <span class="kw">protected</span> String department;   <span class="cm">// 같은 패키지 + 하위 클래스</span>
+               <span class="kw">int</span>    teamCode;    <span class="cm">// 같은 패키지만 (default)</span>
+    <span class="kw">private</span>   String ssn;          <span class="cm">// 이 클래스만</span>
+
+    <span class="kw">public</span> <span class="fn">Employee</span>(String name, String dept, <span class="kw">int</span> code, String ssn) {
+        <span class="kw">this</span>.name = name;
+        <span class="kw">this</span>.department = dept;
+        <span class="kw">this</span>.teamCode = code;
+        <span class="kw">this</span>.ssn = ssn;
+    }
+
+    <span class="kw">private</span> String <span class="fn">maskSSN</span>() {
+        <span class="kw">return</span> ssn.<span class="fn">substring</span>(<span class="num">0</span>, <span class="num">6</span>) + <span class="str">"-*******"</span>;
+    }
+
+    <span class="kw">public</span> String <span class="fn">getInfo</span>() {
+        <span class="kw">return</span> name + <span class="str">" / SSN: "</span> + <span class="fn">maskSSN</span>();
+    }
+}`,
+        output: 'Alice / SSN: 900101-*******',
+        explain: `<h4>접근 제어자 4종 (넓은 → 좁은)</h4>
+<ul>
+  <li><code>public</code>: 모든 곳에서 접근 가능</li>
+  <li><code>protected</code>: 같은 패키지 + 다른 패키지의 하위 클래스</li>
+  <li><code>default</code>(아무것도 없음): 같은 패키지 내부에서만</li>
+  <li><code>private</code>: 해당 클래스 내부에서만</li>
+</ul>`
+      },
+      {
+        title: 'Singleton 패턴 — 전역 설정 관리',
+        tags: ['singleton', 'static', 'private'],
+        desc: '애플리케이션 설정을 담는 <code>AppConfig</code> Singleton을 구현하세요. 인스턴스는 단 하나만 생성되어야 합니다.',
+        code: `<span class="kw">public class</span> <span class="cl">AppConfig</span> {
+    <span class="cm">// TODO: Singleton 구현</span>
+}`,
+        answer: `<span class="kw">public class</span> <span class="cl">AppConfig</span> {
+    <span class="kw">private static</span> <span class="cl">AppConfig</span> instance;
+    <span class="kw">private</span> String dbUrl;
+    <span class="kw">private int</span> maxConnections;
+
+    <span class="kw">private</span> <span class="fn">AppConfig</span>() {
+        dbUrl = <span class="str">"jdbc:mysql://localhost:3306/mydb"</span>;
+        maxConnections = <span class="num">10</span>;
+    }
+
+    <span class="kw">public static synchronized</span> <span class="cl">AppConfig</span> <span class="fn">getInstance</span>() {
+        <span class="kw">if</span> (instance == <span class="kw">null</span>) {
+            instance = <span class="kw">new</span> <span class="fn">AppConfig</span>();
+        }
+        <span class="kw">return</span> instance;
+    }
+
+    <span class="kw">public</span> String <span class="fn">getDbUrl</span>() { <span class="kw">return</span> dbUrl; }
+    <span class="kw">public int</span> <span class="fn">getMaxConnections</span>() { <span class="kw">return</span> maxConnections; }
+}`,
+        output: 'AppConfig.getInstance() == AppConfig.getInstance() → true',
+        explain: `<h4>Singleton 패턴</h4>
+<ul>
+  <li>생성자를 <code>private</code>으로 막아 외부에서 <code>new</code> 불가</li>
+  <li>클래스 내부에 단일 인스턴스를 <code>static</code>으로 보유</li>
+  <li><code>getInstance()</code>로만 접근 (최초 1회만 생성)</li>
+  <li><code>synchronized</code>로 멀티스레드 환경에서의 중복 생성 방지</li>
+</ul>`
+      },
+      {
+        title: 'Builder 패턴으로 객체 생성',
+        tags: ['builder', 'inner class', 'design pattern'],
+        desc: '필드가 많은 <code>User</code> 클래스를 Builder 패턴으로 생성하세요. <code>name</code>(필수), <code>email</code>(선택), <code>age</code>(선택) 필드를 가집니다.',
+        code: `<span class="kw">public class</span> <span class="cl">User</span> {
+    <span class="cm">// TODO: Builder 패턴 구현</span>
+}
+
+<span class="cm">// 사용 예시</span>
+User user = <span class="kw">new</span> User.<span class="cl">Builder</span>(<span class="str">"Alice"</span>)
+    .<span class="fn">email</span>(<span class="str">"alice@example.com"</span>)
+    .<span class="fn">age</span>(<span class="num">30</span>)
+    .<span class="fn">build</span>();`,
+        answer: `<span class="kw">public class</span> <span class="cl">User</span> {
+    <span class="kw">private final</span> String name;
+    <span class="kw">private final</span> String email;
+    <span class="kw">private final int</span> age;
+
+    <span class="kw">private</span> <span class="fn">User</span>(<span class="cl">Builder</span> b) {
+        <span class="kw">this</span>.name  = b.name;
+        <span class="kw">this</span>.email = b.email;
+        <span class="kw">this</span>.age   = b.age;
+    }
+
+    <span class="kw">public static class</span> <span class="cl">Builder</span> {
+        <span class="kw">private final</span> String name; <span class="cm">// 필수</span>
+        <span class="kw">private</span> String email = <span class="str">""</span>;
+        <span class="kw">private int</span> age = <span class="num">0</span>;
+
+        <span class="kw">public</span> <span class="fn">Builder</span>(String name) { <span class="kw">this</span>.name = name; }
+
+        <span class="kw">public</span> <span class="cl">Builder</span> <span class="fn">email</span>(String e) { <span class="kw">this</span>.email = e; <span class="kw">return this</span>; }
+        <span class="kw">public</span> <span class="cl">Builder</span> <span class="fn">age</span>(<span class="kw">int</span> a)    { <span class="kw">this</span>.age = a;   <span class="kw">return this</span>; }
+        <span class="kw">public</span> <span class="cl">User</span>    <span class="fn">build</span>()       { <span class="kw">return new</span> <span class="cl">User</span>(<span class="kw">this</span>); }
+    }
+
+    <span class="ann">@Override</span>
+    <span class="kw">public</span> String <span class="fn">toString</span>() {
+        <span class="kw">return</span> <span class="str">"User{name="</span>+name+<span class="str">", email="</span>+email+<span class="str">", age="</span>+age+<span class="str">"}"</span>;
+    }
+}`,
+        output: 'User{name=Alice, email=alice@example.com, age=30}',
+        explain: `<h4>Builder 패턴의 장점</h4>
+<ul>
+  <li>매개변수가 많을 때 생성자 대신 사용하면 가독성이 크게 향상됩니다.</li>
+  <li>선택적 필드를 유연하게 설정 가능 (필요한 것만 체이닝)</li>
+  <li><code>return this</code>로 메서드 체이닝(Fluent API) 구현</li>
+  <li><code>User</code>의 필드는 <code>final</code> → 생성 후 불변 보장</li>
+</ul>`
+      }
+    ]
+  },
+
+  exception: {
+    title: 'Exception 처리',
+    level: 'Advanced',
+    badgeClass: 'badge-advanced',
+    keywords: ['try', 'catch', 'finally', 'throws', 'throw', 'RuntimeException'],
+    problems: [
+      {
+        title: '기본 try-catch-finally',
+        tags: ['try-catch', 'finally', 'ArithmeticException'],
+        desc: '정수 나눗셈을 수행하되, 0으로 나누는 경우 <code>ArithmeticException</code>을 잡아 -1을 반환하세요. <code>finally</code>에서는 항상 "연산 완료"를 출력하세요.',
+        code: `<span class="kw">public static int</span> <span class="fn">safeDivide</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) {
+    <span class="cm">// TODO: try-catch-finally</span>
+}`,
+        answer: `<span class="kw">public static int</span> <span class="fn">safeDivide</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) {
+    <span class="kw">try</span> {
+        <span class="kw">return</span> a / b;
+    } <span class="kw">catch</span> (<span class="cl">ArithmeticException</span> e) {
+        System.out.println(<span class="str">"오류: "</span> + e.getMessage());
+        <span class="kw">return</span> <span class="op">-</span><span class="num">1</span>;
+    } <span class="kw">finally</span> {
+        System.out.println(<span class="str">"연산 완료"</span>); <span class="cm">// 항상 실행</span>
+    }
+}`,
+        output: 'safeDivide(10,2) → 5, "연산 완료"\nsafeDivide(5,0) → "오류: / by zero", "연산 완료", -1',
+        explain: `<h4>try-catch-finally 실행 흐름</h4>
+<ul>
+  <li><code>try</code>: 예외 발생 가능 코드</li>
+  <li><code>catch</code>: 지정된 예외가 발생하면 실행</li>
+  <li><code>finally</code>: 예외 발생 여부와 무관하게 항상 실행 (자원 해제에 활용)</li>
+  <li><code>ArithmeticException</code>: 정수를 0으로 나눌 때 발생하는 RuntimeException</li>
+</ul>`
+      },
+      {
+        title: '커스텀 예외 만들기',
+        tags: ['custom exception', 'extends', 'RuntimeException'],
+        desc: '출금 금액이 잔액을 초과할 때 발생하는 <code>InsufficientFundsException</code>을 만들고, 이를 사용하는 계좌 클래스를 작성하세요.',
+        code: `<span class="cm">// 커스텀 예외 클래스</span>
+<span class="kw">public class</span> <span class="cl">InsufficientFundsException</span> <span class="kw">extends</span> <span class="cl">RuntimeException</span> {
+    <span class="cm">// TODO</span>
+}`,
+        answer: `<span class="kw">public class</span> <span class="cl">InsufficientFundsException</span> <span class="kw">extends</span> <span class="cl">RuntimeException</span> {
+    <span class="kw">private final double</span> shortfall;
+
+    <span class="kw">public</span> <span class="fn">InsufficientFundsException</span>(<span class="kw">double</span> balance, <span class="kw">double</span> amount) {
+        <span class="kw">super</span>(String.<span class="fn">format</span>(<span class="str">"잔액 부족: 보유 %.0f원, 요청 %.0f원"</span>, balance, amount));
+        <span class="kw">this</span>.shortfall = amount - balance;
+    }
+
+    <span class="kw">public double</span> <span class="fn">getShortfall</span>() { <span class="kw">return</span> shortfall; }
+}
+
+<span class="cm">// 사용</span>
+<span class="kw">public void</span> <span class="fn">withdraw</span>(<span class="kw">double</span> amount) {
+    <span class="kw">if</span> (amount > balance)
+        <span class="kw">throw new</span> <span class="cl">InsufficientFundsException</span>(balance, amount);
+    balance -= amount;
+}`,
+        output: 'InsufficientFundsException: 잔액 부족: 보유 1000원, 요청 1500원',
+        explain: `<h4>커스텀 예외 설계</h4>
+<ul>
+  <li><code>RuntimeException</code> 상속: Unchecked 예외 → <code>throws</code> 선언 불필요</li>
+  <li><code>Exception</code> 상속: Checked 예외 → 호출부에서 반드시 <code>catch</code> 또는 <code>throws</code> 필요</li>
+  <li><code>super(message)</code>: 부모 생성자에 메시지 전달 → <code>getMessage()</code>로 조회 가능</li>
+  <li>추가 필드(<code>shortfall</code>)로 예외 상황에 대한 풍부한 정보 제공</li>
+</ul>`
+      },
+      {
+        title: 'try-with-resources',
+        tags: ['AutoCloseable', 'try-with-resources', 'resource'],
+        desc: '<code>AutoCloseable</code>을 구현한 <code>DatabaseConnection</code> 클래스를 만들고, <code>try-with-resources</code>로 안전하게 사용하세요.',
+        code: `<span class="kw">public class</span> <span class="cl">DatabaseConnection</span> <span class="kw">implements</span> <span class="cl">AutoCloseable</span> {
+    <span class="cm">// TODO</span>
+}`,
+        answer: `<span class="kw">public class</span> <span class="cl">DatabaseConnection</span> <span class="kw">implements</span> <span class="cl">AutoCloseable</span> {
+    <span class="kw">private final</span> String url;
+
+    <span class="kw">public</span> <span class="fn">DatabaseConnection</span>(String url) {
+        <span class="kw">this</span>.url = url;
+        System.out.println(<span class="str">"[열림] "</span> + url);
+    }
+
+    <span class="kw">public</span> String <span class="fn">query</span>(String sql) {
+        <span class="kw">return</span> <span class="str">"결과: "</span> + sql;
+    }
+
+    <span class="ann">@Override</span>
+    <span class="kw">public void</span> <span class="fn">close</span>() {
+        System.out.println(<span class="str">"[닫힘] "</span> + url);
+    }
+}
+
+<span class="cm">// 사용 — close()가 자동 호출됨</span>
+<span class="kw">try</span> (<span class="cl">DatabaseConnection</span> conn =
+        <span class="kw">new</span> <span class="cl">DatabaseConnection</span>(<span class="str">"jdbc:mysql://localhost/db"</span>)) {
+    System.out.println(conn.<span class="fn">query</span>(<span class="str">"SELECT * FROM users"</span>));
+} <span class="cm">// ← 이 지점에서 close() 자동 호출</span>`,
+        output: '[열림] jdbc:mysql://localhost/db\n결과: SELECT * FROM users\n[닫힘] jdbc:mysql://localhost/db',
+        explain: `<h4>try-with-resources (Java 7+)</h4>
+<ul>
+  <li><code>AutoCloseable</code>을 구현한 객체를 <code>try (자원 선언)</code>에 작성하면 블록 종료 시 자동으로 <code>close()</code>가 호출됩니다.</li>
+  <li>예외가 발생해도 <code>close()</code>가 실행 → 자원 누수(leak) 방지</li>
+  <li>JDBC, 파일 I/O 등 자원 관리에 필수적으로 활용됩니다.</li>
+</ul>`
+      },
+      {
+        title: '다중 catch와 예외 체이닝',
+        tags: ['multi-catch', 'exception chaining', 'cause'],
+        desc: '문자열을 정수로 파싱하는 메서드를 작성하세요. <code>null</code>이면 <code>NullPointerException</code>, 숫자가 아니면 <code>NumberFormatException</code>을 각각 잡고, 커스텀 예외로 래핑해 던지세요.',
+        code: `<span class="kw">public static int</span> <span class="fn">parseNumber</span>(String s) {
+    <span class="cm">// TODO: 다중 catch + 예외 체이닝</span>
+}`,
+        answer: `<span class="kw">public static int</span> <span class="fn">parseNumber</span>(String s) {
+    <span class="kw">try</span> {
+        <span class="kw">return</span> Integer.<span class="fn">parseInt</span>(s);
+    } <span class="kw">catch</span> (<span class="cl">NullPointerException</span> | <span class="cl">NumberFormatException</span> e) {
+        <span class="cm">// multi-catch: Java 7+, 두 타입을 | 로 연결</span>
+        <span class="kw">throw new</span> <span class="cl">IllegalArgumentException</span>(
+            <span class="str">"유효하지 않은 입력: "</span> + s, e <span class="cm">// e = cause (예외 체이닝)</span>
+        );
+    }
+}
+
+<span class="cm">// 호출</span>
+<span class="kw">try</span> {
+    <span class="fn">parseNumber</span>(<span class="str">"abc"</span>);
+} <span class="kw">catch</span> (<span class="cl">IllegalArgumentException</span> e) {
+    System.out.println(e.getMessage());
+    System.out.println(<span class="str">"원인: "</span> + e.<span class="fn">getCause</span>());
+}`,
+        output: '유효하지 않은 입력: abc\n원인: java.lang.NumberFormatException: For input string: "abc"',
+        explain: `<h4>핵심 개념 2가지</h4>
+<ul>
+  <li><strong>Multi-catch</strong>: <code>catch (A | B e)</code> — 두 예외를 하나의 블록에서 처리. 코드 중복 감소</li>
+  <li><strong>예외 체이닝(Exception Chaining)</strong>: <code>new Exception(message, cause)</code> — 원인 예외를 감싸 상위 레이어로 전달. <code>getCause()</code>로 원인 조회 가능</li>
+</ul>
+<h4>언제 사용?</h4>
+<p>하위 레이어(DB, 파싱)의 구체적 예외를 상위 레이어에 그대로 노출하기 싫을 때, 도메인 예외로 래핑하면서 원인은 보존합니다.</p>`
+      },
+      {
+        title: 'Checked vs Unchecked Exception 설계',
+        tags: ['checked', 'unchecked', 'throws', 'IOException'],
+        desc: '파일에서 데이터를 읽는 서비스 클래스를 만드세요. Checked Exception(<code>IOException</code>)은 <code>throws</code>로 전파하고, 비즈니스 규칙 위반은 Unchecked Exception으로 처리하세요.',
+        code: `<span class="kw">public class</span> <span class="cl">DataService</span> {
+    <span class="cm">// TODO: readFile (checked), processData (unchecked)</span>
+}`,
+        answer: `<span class="kw">import</span> java.io.*;
+<span class="kw">import</span> java.nio.file.*;
+
+<span class="kw">public class</span> <span class="cl">DataService</span> {
+
+    <span class="cm">// Checked Exception → 호출부에서 반드시 처리</span>
+    <span class="kw">public</span> String <span class="fn">readFile</span>(String path) <span class="kw">throws</span> <span class="cl">IOException</span> {
+        <span class="kw">return</span> Files.<span class="fn">readString</span>(Path.<span class="fn">of</span>(path));
+    }
+
+    <span class="cm">// Unchecked Exception → 프로그래밍 오류 or 비즈니스 규칙 위반</span>
+    <span class="kw">public</span> String <span class="fn">processData</span>(String data) {
+        <span class="kw">if</span> (data == <span class="kw">null</span> || data.<span class="fn">isBlank</span>())
+            <span class="kw">throw new</span> <span class="cl">IllegalStateException</span>(<span class="str">"데이터가 비어 있습니다"</span>);
+        <span class="kw">return</span> data.<span class="fn">toUpperCase</span>();
+    }
+}`,
+        output: '',
+        explain: `<h4>Checked vs Unchecked</h4>
+<ul>
+  <li><strong>Checked</strong> (<code>Exception</code> 직접 상속): 컴파일러가 처리 강제. 외부 자원(파일, 네트워크, DB) 오류에 적합</li>
+  <li><strong>Unchecked</strong> (<code>RuntimeException</code> 상속): 강제하지 않음. 프로그래머 실수(NPE, IAE) 또는 복구 불가 상황에 적합</li>
+</ul>
+<h4>현대적 가이드라인</h4>
+<p>외부 요인으로 인한 예외는 Checked, 내부 로직 오류/비즈니스 규칙 위반은 Unchecked를 선호하는 추세입니다.</p>`
+      }
+    ]
+  },
+
+  lambda: {
+    title: 'Lambda / Stream API / 함수형 프로그래밍',
+    level: 'Advanced',
+    badgeClass: 'badge-advanced',
+    keywords: ['lambda', 'stream', 'functional', 'Consumer', 'Supplier', 'Function', 'Predicate'],
+    problems: [
+      {
+        title: 'Lambda로 Comparator 구현',
+        tags: ['lambda', 'Comparator', 'sort'],
+        desc: '문자열 리스트를 길이 기준으로 정렬하고, 길이가 같으면 알파벳 순으로 정렬하세요. Lambda와 메서드 참조를 활용하세요.',
+        code: `List<String> words = Arrays.<span class="fn">asList</span>(<span class="str">"banana"</span>, <span class="str">"apple"</span>, <span class="str">"fig"</span>, <span class="str">"kiwi"</span>, <span class="str">"cherry"</span>);
+<span class="cm">// TODO: lambda로 정렬</span>`,
+        answer: `List<String> words = Arrays.<span class="fn">asList</span>(<span class="str">"banana"</span>, <span class="str">"apple"</span>, <span class="str">"fig"</span>, <span class="str">"kiwi"</span>, <span class="str">"cherry"</span>);
+
+<span class="cm">// Lambda</span>
+words.<span class="fn">sort</span>((a, b) -> {
+    <span class="kw">if</span> (a.length() != b.length()) <span class="kw">return</span> a.length() - b.length();
+    <span class="kw">return</span> a.<span class="fn">compareTo</span>(b);
+});
+
+<span class="cm">// 메서드 참조 + Comparator 조합 (더 간결)</span>
+words.<span class="fn">sort</span>(Comparator.<span class="fn">comparingInt</span>(String::length)
+                    .<span class="fn">thenComparing</span>(Comparator.<span class="fn">naturalOrder</span>()));
+
+System.out.println(words);`,
+        output: '[fig, kiwi, apple, banana, cherry]',
+        explain: `<h4>Lambda 문법</h4>
+<p><code>(매개변수) -> { 본문 }</code> 또는 단일 표현식이면 <code>(a, b) -> a.length() - b.length()</code></p>
+<h4>Comparator 체이닝</h4>
+<ul>
+  <li><code>comparingInt</code>: 정수 키로 1차 정렬</li>
+  <li><code>thenComparing</code>: 동일한 경우 2차 정렬 조건 추가</li>
+  <li><code>String::length</code>: 메서드 참조 (람다 <code>s -> s.length()</code>와 동일)</li>
+</ul>`
+      },
+      {
+        title: 'Stream API — 필터/맵/집계',
+        tags: ['stream', 'filter', 'map', 'collect'],
+        desc: '정수 리스트에서 짝수만 골라 제곱한 다음, 합계를 구하세요. Stream API를 사용하세요.',
+        code: `List<<span class="cl">Integer</span>> nums = List.<span class="fn">of</span>(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>,<span class="num">5</span>,<span class="num">6</span>,<span class="num">7</span>,<span class="num">8</span>);
+<span class="cm">// TODO: 짝수만 → 제곱 → 합계</span>`,
+        answer: `List<<span class="cl">Integer</span>> nums = List.<span class="fn">of</span>(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>,<span class="num">5</span>,<span class="num">6</span>,<span class="num">7</span>,<span class="num">8</span>);
+
+<span class="kw">int</span> result = nums.<span class="fn">stream</span>()
+    .<span class="fn">filter</span>(n -> n % <span class="num">2</span> == <span class="num">0</span>)      <span class="cm">// 짝수만</span>
+    .<span class="fn">mapToInt</span>(n -> n * n)           <span class="cm">// 제곱</span>
+    .<span class="fn">sum</span>();                          <span class="cm">// 4+16+36+64 = 120</span>
+
+System.out.println(result); <span class="cm">// 120</span>
+
+<span class="cm">// 또는 collect 사용</span>
+List<<span class="cl">Integer</span>> squared = nums.<span class="fn">stream</span>()
+    .<span class="fn">filter</span>(n -> n % <span class="num">2</span> == <span class="num">0</span>)
+    .<span class="fn">map</span>(n -> n * n)
+    .<span class="fn">collect</span>(Collectors.<span class="fn">toList</span>());`,
+        output: '120\n[4, 16, 36, 64]',
+        explain: `<h4>Stream 파이프라인</h4>
+<ul>
+  <li><strong>소스</strong>: <code>collection.stream()</code></li>
+  <li><strong>중간 연산</strong> (lazy): <code>filter</code>, <code>map</code>, <code>sorted</code>, <code>distinct</code> — 체인 가능, 실제 실행은 지연</li>
+  <li><strong>최종 연산</strong> (terminal): <code>sum</code>, <code>collect</code>, <code>count</code>, <code>forEach</code> — 스트림 소비, 결과 반환</li>
+</ul>
+<h4>mapToInt vs map</h4>
+<p><code>mapToInt</code>는 <code>IntStream</code>을 반환 → <code>sum()</code>, <code>average()</code> 등 기본형 특화 메서드 사용 가능</p>`
+      },
+      {
+        title: '함수형 인터페이스 직접 만들기',
+        tags: ['@FunctionalInterface', 'Consumer', 'Function', 'Predicate'],
+        desc: '<code>@FunctionalInterface</code>를 사용해 두 정수를 받아 정수를 반환하는 <code>BiOperation</code>을 정의하고, 사칙연산을 Lambda로 전달하세요.',
+        code: `<ann>@FunctionalInterface</ann>
+<span class="kw">interface</span> <span class="cl">BiOperation</span> {
+    <span class="cm">// TODO</span>
+}`,
+        answer: `<span class="ann">@FunctionalInterface</span>
+<span class="kw">interface</span> <span class="cl">BiOperation</span> {
+    <span class="kw">int</span> <span class="fn">operate</span>(<span class="kw">int</span> a, <span class="kw">int</span> b);
+}
+
+<span class="kw">public class</span> <span class="cl">Main</span> {
+    <span class="kw">static int</span> <span class="fn">calculate</span>(<span class="kw">int</span> a, <span class="kw">int</span> b, <span class="cl">BiOperation</span> op) {
+        <span class="kw">return</span> op.<span class="fn">operate</span>(a, b);
+    }
+
+    <span class="kw">public static void</span> <span class="fn">main</span>(String[] args) {
+        System.out.println(<span class="fn">calculate</span>(<span class="num">10</span>, <span class="num">3</span>, (a, b) -> a + b)); <span class="cm">// 13</span>
+        System.out.println(<span class="fn">calculate</span>(<span class="num">10</span>, <span class="num">3</span>, (a, b) -> a - b)); <span class="cm">// 7</span>
+        System.out.println(<span class="fn">calculate</span>(<span class="num">10</span>, <span class="num">3</span>, (a, b) -> a * b)); <span class="cm">// 30</span>
+        System.out.println(<span class="fn">calculate</span>(<span class="num">10</span>, <span class="num">3</span>, (a, b) -> a / b)); <span class="cm">// 3</span>
+    }
+}`,
+        output: '13\n7\n30\n3',
+        explain: `<h4>함수형 인터페이스 규칙</h4>
+<ul>
+  <li>추상 메서드가 정확히 1개인 인터페이스</li>
+  <li><code>@FunctionalInterface</code> 어노테이션으로 컴파일 타임에 검증</li>
+  <li>Java 표준 함수형 인터페이스: <code>Consumer&lt;T&gt;</code>(소비), <code>Supplier&lt;T&gt;</code>(공급), <code>Function&lt;T,R&gt;</code>(변환), <code>Predicate&lt;T&gt;</code>(판별)</li>
+</ul>`
+      },
+      {
+        title: 'Stream — groupingBy와 통계',
+        tags: ['stream', 'groupingBy', 'statistics', 'Collectors'],
+        desc: '상품 리스트를 카테고리별로 그룹화하고, 각 카테고리의 평균 가격과 상품 수를 출력하세요.',
+        code: `<span class="kw">record</span> <span class="cl">Product</span>(String name, String category, <span class="kw">double</span> price) {}
+
+List<<span class="cl">Product</span>> products = List.<span class="fn">of</span>(
+    <span class="kw">new</span> <span class="fn">Product</span>(<span class="str">"노트북"</span>, <span class="str">"전자"</span>, <span class="num">1200000</span>),
+    <span class="kw">new</span> <span class="fn">Product</span>(<span class="str">"마우스"</span>, <span class="str">"전자"</span>, <span class="num">35000</span>),
+    <span class="kw">new</span> <span class="fn">Product</span>(<span class="str">"책상"</span>, <span class="str">"가구"</span>, <span class="num">250000</span>),
+    <span class="kw">new</span> <span class="fn">Product</span>(<span class="str">"의자"</span>, <span class="str">"가구"</span>, <span class="num">180000</span>)
+);
+<span class="cm">// TODO: 카테고리별 그룹화 + 통계</span>`,
+        answer: `Map<String, DoubleSummaryStatistics> stats = products.<span class="fn">stream</span>()
+    .<span class="fn">collect</span>(Collectors.<span class="fn">groupingBy</span>(
+        Product::category,
+        Collectors.<span class="fn">summarizingDouble</span>(Product::price)
+    ));
+
+stats.<span class="fn">forEach</span>((cat, s) -> System.out.<span class="fn">printf</span>(
+    <span class="str">"%s: 상품수=%d, 평균=%.0f원%n"</span>,
+    cat, s.<span class="fn">getCount</span>(), s.<span class="fn">getAverage</span>()
+));`,
+        output: '전자: 상품수=2, 평균=617500원\n가구: 상품수=2, 평균=215000원',
+        explain: `<h4>groupingBy + 다운스트림 컬렉터</h4>
+<ul>
+  <li><code>groupingBy(classifier)</code>: 분류 함수 기준으로 Map&lt;K, List&lt;V&gt;&gt; 생성</li>
+  <li><code>groupingBy(classifier, downstream)</code>: 각 그룹에 추가 집계 적용</li>
+  <li><code>summarizingDouble</code>: count, sum, min, max, average를 한 번에 계산하는 <code>DoubleSummaryStatistics</code> 반환</li>
+</ul>`
+      },
+      {
+        title: 'Optional로 NPE 방지',
+        tags: ['Optional', 'map', 'orElse', 'flatMap'],
+        desc: '사용자 이름이 null일 수 있는 상황에서 <code>Optional</code>을 활용해 안전하게 대문자로 변환하세요.',
+        code: `<span class="cm">// null이 될 수 있는 메서드</span>
+<span class="kw">public static</span> String <span class="fn">findUsername</span>(<span class="kw">int</span> id) {
+    <span class="kw">return</span> id == <span class="num">1</span> ? <span class="str">"alice"</span> : <span class="kw">null</span>;
+}
+
+<span class="cm">// TODO: Optional 사용</span>`,
+        answer: `<span class="kw">public static</span> String <span class="fn">findUsername</span>(<span class="kw">int</span> id) {
+    <span class="kw">return</span> id == <span class="num">1</span> ? <span class="str">"alice"</span> : <span class="kw">null</span>;
+}
+
+<span class="cm">// Optional.ofNullable로 null 안전하게 감싸기</span>
+String result1 = Optional.<span class="fn">ofNullable</span>(<span class="fn">findUsername</span>(<span class="num">1</span>))
+    .<span class="fn">map</span>(String::toUpperCase)
+    .<span class="fn">orElse</span>(<span class="str">"UNKNOWN"</span>);
+System.out.println(result1); <span class="cm">// ALICE</span>
+
+String result2 = Optional.<span class="fn">ofNullable</span>(<span class="fn">findUsername</span>(<span class="num">99</span>))
+    .<span class="fn">map</span>(String::toUpperCase)
+    .<span class="fn">orElse</span>(<span class="str">"UNKNOWN"</span>);
+System.out.println(result2); <span class="cm">// UNKNOWN</span>`,
+        output: 'ALICE\nUNKNOWN',
+        explain: `<h4>Optional 주요 메서드</h4>
+<ul>
+  <li><code>Optional.of(v)</code>: v가 null이면 NPE 발생 (null이 아님을 확신할 때)</li>
+  <li><code>Optional.ofNullable(v)</code>: v가 null이면 빈 Optional 반환 (null 가능성 있을 때)</li>
+  <li><code>map(fn)</code>: 값이 있으면 변환, 없으면 빈 Optional 유지</li>
+  <li><code>orElse(default)</code>: 값이 없으면 기본값 반환</li>
+  <li><code>orElseThrow()</code>: 값이 없으면 예외 발생</li>
+</ul>`
+      }
+    ]
+  },
+
+  jdbc: {
+    title: 'JDBC / Transaction / PreparedStatement',
+    level: 'JDBC',
+    badgeClass: 'badge-jdbc',
+    keywords: ['JDBC', 'PreparedStatement', 'Transaction', 'Commit', 'Rollback', 'Batch'],
+    problems: [
+      {
+        title: 'JDBC 기본 연결과 SELECT',
+        tags: ['DriverManager', 'Connection', 'ResultSet'],
+        desc: 'JDBC로 데이터베이스에 연결하고 <code>users</code> 테이블의 전체 데이터를 조회하여 출력하는 코드를 작성하세요.',
+        code: `<span class="cm">// 환경: MySQL, users 테이블 (id INT, name VARCHAR, email VARCHAR)</span>
+<span class="kw">public static void</span> <span class="fn">selectAll</span>() {
+    <span class="cm">// TODO: JDBC 연결 → SELECT → ResultSet 처리</span>
+}`,
+        answer: `<span class="kw">public static void</span> <span class="fn">selectAll</span>() {
+    String url  = <span class="str">"jdbc:mysql://localhost:3306/mydb"</span>;
+    String user = <span class="str">"root"</span>;
+    String pass = <span class="str">"1234"</span>;
+
+    String sql = <span class="str">"SELECT id, name, email FROM users"</span>;
+
+    <span class="kw">try</span> (
+        <span class="cl">Connection</span>  conn = DriverManager.<span class="fn">getConnection</span>(url, user, pass);
+        <span class="cl">Statement</span>   stmt = conn.<span class="fn">createStatement</span>();
+        <span class="cl">ResultSet</span>   rs   = stmt.<span class="fn">executeQuery</span>(sql)
+    ) {
+        <span class="kw">while</span> (rs.<span class="fn">next</span>()) {
+            System.out.<span class="fn">printf</span>(<span class="str">"id=%d, name=%s, email=%s%n"</span>,
+                rs.<span class="fn">getInt</span>(<span class="str">"id"</span>),
+                rs.<span class="fn">getString</span>(<span class="str">"name"</span>),
+                rs.<span class="fn">getString</span>(<span class="str">"email"</span>)
+            );
+        }
+    } <span class="kw">catch</span> (<span class="cl">SQLException</span> e) {
+        e.<span class="fn">printStackTrace</span>();
+    }
+}`,
+        output: 'id=1, name=Alice, email=alice@example.com\nid=2, name=Bob, email=bob@example.com',
+        explain: `<h4>JDBC 기본 흐름</h4>
+<ul>
+  <li><code>DriverManager.getConnection(url, user, pass)</code>: DB 연결 객체 획득</li>
+  <li><code>conn.createStatement()</code>: SQL 실행 객체 생성</li>
+  <li><code>executeQuery(sql)</code>: SELECT 실행, ResultSet 반환</li>
+  <li><code>rs.next()</code>: 다음 행으로 이동 (처음에는 커서가 행 앞에 위치)</li>
+  <li>try-with-resources로 Connection, Statement, ResultSet을 자동 close</li>
+</ul>`
+      },
+      {
+        title: 'PreparedStatement와 SQL Injection 방지',
+        tags: ['PreparedStatement', 'SQL Injection', '?'],
+        desc: '사용자 ID로 조회하는 메서드를 <code>Statement</code>(취약)와 <code>PreparedStatement</code>(안전) 방식으로 각각 구현하고 차이를 설명하세요.',
+        code: `<span class="cm">// 취약한 방식 (Statement)</span>
+<span class="kw">public static void</span> <span class="fn">findUserUnsafe</span>(String id) {
+    String sql = <span class="str">"SELECT * FROM users WHERE id = '"</span> + id + <span class="str">"'"</span>;
+    <span class="cm">// id = "1' OR '1'='1" → 전체 행 노출!</span>
+}
+
+<span class="cm">// TODO: PreparedStatement로 안전하게 구현</span>`,
+        answer: `<span class="cm">// ✅ 안전한 방식 (PreparedStatement)</span>
+<span class="kw">public static void</span> <span class="fn">findUser</span>(<span class="cl">Connection</span> conn, <span class="kw">int</span> id)
+        <span class="kw">throws</span> <span class="cl">SQLException</span> {
+    String sql = <span class="str">"SELECT id, name FROM users WHERE id = ?"</span>;
+
+    <span class="kw">try</span> (<span class="cl">PreparedStatement</span> pstmt = conn.<span class="fn">prepareStatement</span>(sql)) {
+        pstmt.<span class="fn">setInt</span>(<span class="num">1</span>, id);         <span class="cm">// ? 에 값 바인딩</span>
+        <span class="cl">ResultSet</span> rs = pstmt.<span class="fn">executeQuery</span>();
+        <span class="kw">while</span> (rs.<span class="fn">next</span>()) {
+            System.out.println(rs.<span class="fn">getString</span>(<span class="str">"name"</span>));
+        }
+    }
+}`,
+        output: 'findUser(conn, 1) → "Alice"',
+        explain: `<h4>SQL Injection이란?</h4>
+<p>악의적인 SQL 코드를 입력값에 포함시켜 쿼리를 조작하는 공격입니다.</p>
+<ul>
+  <li><strong>Statement 취약점</strong>: 입력값이 SQL에 직접 문자열 연결 → 공격자가 SQL 구조 변경 가능</li>
+  <li><strong>PreparedStatement 방어</strong>: <code>?</code>(파라미터 바인딩)을 사용 → 입력값은 데이터로만 처리, SQL 구조 변경 불가</li>
+  <li>추가 장점: 동일 쿼리 반복 시 미리 컴파일 → 성능 향상</li>
+</ul>`
+      },
+      {
+        title: 'Transaction — Commit / Rollback',
+        tags: ['Transaction', 'commit', 'rollback', 'setAutoCommit'],
+        desc: '계좌 이체 로직을 트랜잭션으로 구현하세요. A 계좌에서 B 계좌로 금액을 이체하되, 중간에 오류가 발생하면 Rollback되어야 합니다.',
+        code: `<span class="kw">public static void</span> <span class="fn">transfer</span>(<span class="cl">Connection</span> conn,
+        <span class="kw">int</span> fromId, <span class="kw">int</span> toId, <span class="kw">double</span> amount) {
+    <span class="cm">// TODO: Transaction 처리</span>
+}`,
+        answer: `<span class="kw">public static void</span> <span class="fn">transfer</span>(<span class="cl">Connection</span> conn,
+        <span class="kw">int</span> fromId, <span class="kw">int</span> toId, <span class="kw">double</span> amount) <span class="kw">throws</span> <span class="cl">SQLException</span> {
+
+    conn.<span class="fn">setAutoCommit</span>(<span class="kw">false</span>); <span class="cm">// 자동 커밋 OFF</span>
+
+    <span class="kw">try</span> {
+        <span class="cm">// 1. 출금</span>
+        String debit = <span class="str">"UPDATE accounts SET balance = balance - ? WHERE id = ?"</span>;
+        <span class="kw">try</span> (<span class="cl">PreparedStatement</span> ps = conn.<span class="fn">prepareStatement</span>(debit)) {
+            ps.<span class="fn">setDouble</span>(<span class="num">1</span>, amount);
+            ps.<span class="fn">setInt</span>(<span class="num">2</span>, fromId);
+            ps.<span class="fn">executeUpdate</span>();
+        }
+
+        <span class="cm">// 2. 입금</span>
+        String credit = <span class="str">"UPDATE accounts SET balance = balance + ? WHERE id = ?"</span>;
+        <span class="kw">try</span> (<span class="cl">PreparedStatement</span> ps = conn.<span class="fn">prepareStatement</span>(credit)) {
+            ps.<span class="fn">setDouble</span>(<span class="num">1</span>, amount);
+            ps.<span class="fn">setInt</span>(<span class="num">2</span>, toId);
+            ps.<span class="fn">executeUpdate</span>();
+        }
+
+        conn.<span class="fn">commit</span>();   <span class="cm">// 모두 성공 → 커밋</span>
+        System.out.println(<span class="str">"이체 성공"</span>);
+
+    } <span class="kw">catch</span> (<span class="cl">Exception</span> e) {
+        conn.<span class="fn">rollback</span>(); <span class="cm">// 실패 → 롤백</span>
+        <span class="kw">throw new</span> <span class="cl">RuntimeException</span>(<span class="str">"이체 실패, 롤백됨"</span>, e);
+    } <span class="kw">finally</span> {
+        conn.<span class="fn">setAutoCommit</span>(<span class="kw">true</span>); <span class="cm">// 복원</span>
+    }
+}`,
+        output: '이체 성공 / (실패 시) RuntimeException: 이체 실패, 롤백됨',
+        explain: `<h4>Transaction ACID</h4>
+<ul>
+  <li><strong>Atomicity(원자성)</strong>: 출금+입금이 전부 성공하거나 전부 실패해야 함</li>
+  <li><code>setAutoCommit(false)</code>: 각 SQL이 자동 커밋되지 않도록 설정</li>
+  <li><code>commit()</code>: 모든 작업을 DB에 영구 반영</li>
+  <li><code>rollback()</code>: 트랜잭션 시작 지점으로 모든 변경사항 되돌리기</li>
+  <li>finally에서 <code>setAutoCommit(true)</code>로 커넥션 풀 반환 전 복원</li>
+</ul>`
+      },
+      {
+        title: 'Batch Processing — 대량 INSERT',
+        tags: ['batch', 'addBatch', 'executeBatch', 'performance'],
+        desc: '10,000건의 데이터를 DB에 삽입할 때 Batch를 활용해 성능을 최적화하세요.',
+        code: `<span class="kw">public static void</span> <span class="fn">batchInsert</span>(<span class="cl">Connection</span> conn, List<String[]> data)
+        <span class="kw">throws</span> <span class="cl">SQLException</span> {
+    <span class="cm">// TODO: Batch INSERT</span>
+}`,
+        answer: `<span class="kw">public static void</span> <span class="fn">batchInsert</span>(<span class="cl">Connection</span> conn, List<String[]> data)
+        <span class="kw">throws</span> <span class="cl">SQLException</span> {
+
+    String sql = <span class="str">"INSERT INTO users (name, email) VALUES (?, ?)"</span>;
+
+    conn.<span class="fn">setAutoCommit</span>(<span class="kw">false</span>);
+    <span class="kw">try</span> (<span class="cl">PreparedStatement</span> pstmt = conn.<span class="fn">prepareStatement</span>(sql)) {
+        <span class="kw">int</span> count = <span class="num">0</span>;
+        <span class="kw">for</span> (String[] row : data) {
+            pstmt.<span class="fn">setString</span>(<span class="num">1</span>, row[<span class="num">0</span>]);
+            pstmt.<span class="fn">setString</span>(<span class="num">2</span>, row[<span class="num">1</span>]);
+            pstmt.<span class="fn">addBatch</span>();        <span class="cm">// 배치에 추가</span>
+
+            <span class="kw">if</span> (++count % <span class="num">1000</span> == <span class="num">0</span>) { <span class="cm">// 1000건마다 실행</span>
+                pstmt.<span class="fn">executeBatch</span>();
+                conn.<span class="fn">commit</span>();
+                pstmt.<span class="fn">clearBatch</span>();
+            }
+        }
+        pstmt.<span class="fn">executeBatch</span>(); <span class="cm">// 나머지 실행</span>
+        conn.<span class="fn">commit</span>();
+    } <span class="kw">catch</span> (<span class="cl">SQLException</span> e) {
+        conn.<span class="fn">rollback</span>();
+        <span class="kw">throw</span> e;
+    } <span class="kw">finally</span> {
+        conn.<span class="fn">setAutoCommit</span>(<span class="kw">true</span>);
+    }
+}`,
+        output: '10000건 삽입 완료',
+        explain: `<h4>Batch의 성능 이점</h4>
+<ul>
+  <li>단건 INSERT: 10,000번 네트워크 왕복 → 느림</li>
+  <li>Batch: 여러 SQL을 묶어 한 번에 전송 → 10~100배 빠름</li>
+  <li><code>addBatch()</code>: 배치 큐에 추가</li>
+  <li><code>executeBatch()</code>: 큐에 쌓인 SQL 일괄 실행</li>
+  <li>1000건 단위 분할 실행: 메모리 과다 사용 방지</li>
+</ul>`
+      },
+      {
+        title: 'DAO 패턴으로 리팩토링',
+        tags: ['DAO', 'pattern', 'interface', 'CRUD'],
+        desc: '<code>UserDAO</code> 인터페이스와 <code>UserDAOImpl</code> 구현체를 작성하세요. CRUD 전체를 구현합니다.',
+        code: `<span class="kw">public interface</span> <span class="cl">UserDAO</span> {
+    <span class="cm">// TODO: CRUD 메서드 선언</span>
+}`,
+        answer: `<span class="kw">public interface</span> <span class="cl">UserDAO</span> {
+    <span class="kw">void</span>    <span class="fn">insert</span>(<span class="cl">User</span> user) <span class="kw">throws</span> <span class="cl">SQLException</span>;
+    <span class="cl">User</span>    <span class="fn">findById</span>(<span class="kw">int</span> id) <span class="kw">throws</span> <span class="cl">SQLException</span>;
+    List<<span class="cl">User</span>> <span class="fn">findAll</span>()     <span class="kw">throws</span> <span class="cl">SQLException</span>;
+    <span class="kw">void</span>    <span class="fn">update</span>(<span class="cl">User</span> user) <span class="kw">throws</span> <span class="cl">SQLException</span>;
+    <span class="kw">void</span>    <span class="fn">delete</span>(<span class="kw">int</span> id)   <span class="kw">throws</span> <span class="cl">SQLException</span>;
+}
+
+<span class="kw">public class</span> <span class="cl">UserDAOImpl</span> <span class="kw">implements</span> <span class="cl">UserDAO</span> {
+    <span class="kw">private final</span> <span class="cl">Connection</span> conn;
+
+    <span class="kw">public</span> <span class="fn">UserDAOImpl</span>(<span class="cl">Connection</span> conn) {
+        <span class="kw">this</span>.conn = conn;
+    }
+
+    <span class="ann">@Override</span>
+    <span class="kw">public void</span> <span class="fn">insert</span>(<span class="cl">User</span> user) <span class="kw">throws</span> <span class="cl">SQLException</span> {
+        String sql = <span class="str">"INSERT INTO users(name,email) VALUES(?,?)"</span>;
+        <span class="kw">try</span> (<span class="cl">PreparedStatement</span> ps = conn.<span class="fn">prepareStatement</span>(sql)) {
+            ps.<span class="fn">setString</span>(<span class="num">1</span>, user.<span class="fn">getName</span>());
+            ps.<span class="fn">setString</span>(<span class="num">2</span>, user.<span class="fn">getEmail</span>());
+            ps.<span class="fn">executeUpdate</span>();
+        }
+    }
+
+    <span class="ann">@Override</span>
+    <span class="kw">public</span> <span class="cl">User</span> <span class="fn">findById</span>(<span class="kw">int</span> id) <span class="kw">throws</span> <span class="cl">SQLException</span> {
+        String sql = <span class="str">"SELECT * FROM users WHERE id=?"</span>;
+        <span class="kw">try</span> (<span class="cl">PreparedStatement</span> ps = conn.<span class="fn">prepareStatement</span>(sql)) {
+            ps.<span class="fn">setInt</span>(<span class="num">1</span>, id);
+            <span class="cl">ResultSet</span> rs = ps.<span class="fn">executeQuery</span>();
+            <span class="kw">if</span> (rs.<span class="fn">next</span>())
+                <span class="kw">return new</span> <span class="fn">User</span>(rs.<span class="fn">getInt</span>(<span class="str">"id"</span>),
+                               rs.<span class="fn">getString</span>(<span class="str">"name"</span>),
+                               rs.<span class="fn">getString</span>(<span class="str">"email"</span>));
+        }
+        <span class="kw">return null</span>;
+    }
+    <span class="cm">// update, delete, findAll 동일 패턴 생략...</span>
+}`,
+        output: '',
+        explain: `<h4>DAO (Data Access Object) 패턴</h4>
+<ul>
+  <li>데이터 접근 로직을 비즈니스 로직과 분리하는 디자인 패턴</li>
+  <li>인터페이스로 추상화 → 나중에 MySQL → PostgreSQL 교체해도 비즈니스 로직 변경 없음</li>
+  <li>Service 클래스는 DAO 인터페이스에만 의존 → 테스트 용이 (Mock DAO 사용 가능)</li>
+</ul>`
+      }
+    ]
+  }
+};
+
+// ════════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════════
+let currentTopic = null;
+let solved = new Set(JSON.parse(localStorage.getItem('java_solved') || '[]'));
+
+function saveSolved() {
+  localStorage.setItem('java_solved', JSON.stringify([...solved]));
+  updateProgress();
+}
+
+// ════════════════════════════════════════════════
+//  PROGRESS
+// ════════════════════════════════════════════════
+function countTotal() {
+  return Object.values(TOPICS).reduce((s, t) => s + t.problems.length, 0);
+}
+
+function updateProgress() {
+  const total = countTotal();
+  const done = solved.size;
+  const pct = total > 0 ? Math.round(done / total * 100) : 0;
+  document.getElementById('progressText').textContent = `${done} / ${total} 완료`;
+  document.getElementById('progressPct').textContent = `${pct}%`;
+  document.getElementById('progressBar').style.width = `${pct}%`;
+}
+
+// ════════════════════════════════════════════════
+//  RENDER
+// ════════════════════════════════════════════════
+function showHome(el) {
+  setActive(el);
+  document.getElementById('headerTitle').textContent = 'Java 실습 문제집';
+  document.getElementById('headerSub').textContent = '주제를 선택해 문제를 풀어보세요';
+  document.getElementById('levelBadge').style.display = 'none';
+
+  const sections = [
+    { label: 'Beginner (1)', keys: ['primitive','control'], color: '#3fb950' },
+    { label: 'Beginner (2)', keys: ['nestedloop','array'], color: '#3fb950' },
+    { label: 'Basic', keys: ['class','oop-basic'], color: '#58a6ff' },
+    { label: 'Intermediate', keys: ['encapsulation','inheritance','polymorphism','designpattern'], color: '#bc8cff' },
+    { label: 'Advanced', keys: ['jvm','string','generics','exception','collection','lambda','thread'], color: '#ffa657' },
+    { label: 'JDBC', keys: ['jdbc'], color: '#e3b341' },
+  ];
+
+  const topicEmoji = {
+    primitive:'🔢', control:'🔄', nestedloop:'🌀', array:'📊',
+    class:'🏗️', 'oop-basic':'⚙️', encapsulation:'🔒', inheritance:'🧬',
+    polymorphism:'🎭', designpattern:'🎨', jvm:'🖥️', string:'📝',
+    generics:'🧪', exception:'⚠️', collection:'📦', lambda:'λ',
+    thread:'🧵', jdbc:'🗄️'
+  };
+
+  let html = `<div class="home-hero">
+    <h1>Java <span>실습 문제집</span></h1>
+    <p>Beginner부터 JDBC까지, 단계별 실습 문제와 정답·해설을 제공합니다.<br>직접 코드를 작성해보고 정답을 확인하세요.</p>
+  </div>
+  <div class="stats-row">
+    <div class="stat-item"><span class="stat-num">${countTotal()}</span><div class="stat-label">총 문제 수</div></div>
+    <div class="stat-item"><span class="stat-num">${Object.keys(TOPICS).length}</span><div class="stat-label">주제 수</div></div>
+    <div class="stat-item"><span class="stat-num">${solved.size}</span><div class="stat-label">완료한 문제</div></div>
+  </div>`;
+
+  for (const sec of sections) {
+    html += `<div class="section-label" style="color:${sec.color};margin-top:24px;margin-bottom:12px">${sec.label}</div>
+    <div class="topic-grid">`;
+    for (const key of sec.keys) {
+      const t = TOPICS[key];
+      if (!t) continue;
+      const done = t.problems.filter((p, i) => solved.has(`${key}-${i}`)).length;
+      html += `<div class="topic-card" onclick="showTopicByKey('${key}')">
+        <div class="topic-card-header">
+          <div class="topic-icon">${topicEmoji[key]||'📌'}</div>
+          <h3>${t.title}</h3>
+        </div>
+        <p>${t.keywords.slice(0,4).map(k=>`<code style="background:var(--bg3);padding:1px 4px;border-radius:3px;font-size:10px;color:var(--accent)">${k}</code>`).join(' ')}</p>
+        <div class="topic-count">${done}/${t.problems.length} 완료</div>
+      </div>`;
+    }
+    html += `</div>`;
+  }
+
+  document.getElementById('content').innerHTML = html;
+}
+
+function showTopicByKey(key) {
+  const navItems = document.querySelectorAll('.nav-item');
+  navItems.forEach(el => {
+    if (el.getAttribute('onclick') && el.getAttribute('onclick').includes(`'${key}'`)) {
+      showTopic(key, el);
+    }
+  });
+}
+
+function showTopic(key, el) {
+  setActive(el);
+  currentTopic = key;
+  const topic = TOPICS[key];
+  if (!topic) {
+    renderComingSoon(key);
+    return;
+  }
+
+  document.getElementById('headerTitle').textContent = topic.title;
+  document.getElementById('headerSub').textContent = `${topic.problems.length}개 문제`;
+  const badge = document.getElementById('levelBadge');
+  badge.textContent = topic.level;
+  badge.className = `level-badge ${topic.badgeClass}`;
+  badge.style.display = 'inline-block';
+
+  let html = `<div class="section-title">${topic.title}</div>
+    <div class="section-sub">${topic.problems.length}개 문제 · ${topic.keywords.map(k=>`<code style="background:var(--bg3);padding:1px 5px;border-radius:3px;font-size:11px;color:var(--accent)">${k}</code>`).join(' ')}</div>`;
+
+  topic.problems.forEach((p, i) => {
+    const pid = `${key}-${i}`;
+    const isDone = solved.has(pid);
+    html += renderProblem(p, i, pid, isDone);
+  });
+
+  document.getElementById('content').innerHTML = html;
+}
+
+function renderProblem(p, i, pid, isDone) {
+  return `<div class="problem-card" id="card-${pid}">
+    <div class="problem-header" onclick="toggleProblem('${pid}')">
+      <div class="problem-num" style="${isDone ? 'background:var(--green-bg);color:var(--green);border-color:rgba(63,185,80,0.3)' : ''}">${isDone ? '✓' : i+1}</div>
+      <div>
+        <div class="problem-title">${p.title}</div>
+        <div class="problem-tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+      </div>
+      <button class="expand-btn" id="btn-${pid}">+</button>
+    </div>
+    <div class="problem-body" id="body-${pid}">
+      <div class="problem-desc">${p.desc}</div>
+      <div class="code-block">
+        <div class="code-block-header">
+          <div class="code-block-label">📝 <span>문제</span> — 코드를 완성하세요</div>
+          <button class="copy-btn" onclick="copyCode(this, 'q-${pid}')">복사</button>
+        </div>
+        <pre id="q-${pid}">${p.code}</pre>
+      </div>
+      <div class="show-answer-wrap">
+        <button class="show-answer-btn" id="toggle-${pid}" onclick="showAnswer('${pid}')">정답 보기</button>
+        <button class="show-answer-btn" style="background:rgba(63,185,80,0.1);border-color:rgba(63,185,80,0.3);color:var(--green)" onclick="markSolved('${pid}', ${i})">✓ 풀었어요</button>
+      </div>
+      <div class="answer-hidden" id="ans-${pid}">
+        <div class="sol-tabs">
+          <div class="sol-tab active" onclick="switchTab('${pid}', 'code', this)">💡 정답 코드</div>
+          <div class="sol-tab" onclick="switchTab('${pid}', 'explain', this)">📖 해설</div>
+        </div>
+        <div class="sol-panel active" id="tab-code-${pid}">
+          <div class="code-block" style="border-top:none">
+            <div class="code-block-header">
+              <div class="code-block-label">✅ <span>정답</span></div>
+              <button class="copy-btn" onclick="copyCode(this, 'a-${pid}')">복사</button>
+            </div>
+            <pre id="a-${pid}">${p.answer}</pre>
+          </div>
+          ${p.output ? `<div style="padding:12px 20px;border-top:1px solid var(--border)">
+            <div class="output-label">실행 결과</div>
+            <div class="output-block">${p.output.replace(/\n/g, '<br>')}</div>
+          </div>` : ''}
+        </div>
+        <div class="sol-panel" id="tab-explain-${pid}">
+          <div class="explain-block">${p.explain}</div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderComingSoon(key) {
+  document.getElementById('headerTitle').textContent = key;
+  document.getElementById('headerSub').textContent = '준비 중';
+  document.getElementById('levelBadge').style.display = 'none';
+  document.getElementById('content').innerHTML = `
+    <div style="text-align:center;padding:80px 20px;color:var(--text3)">
+      <div style="font-size:48px;margin-bottom:16px">🚧</div>
+      <div style="font-size:16px;font-weight:600;color:var(--text2);margin-bottom:8px">준비 중입니다</div>
+      <div style="font-size:13px">이 주제의 문제는 곧 업로드될 예정입니다.</div>
+    </div>`;
+}
+
+// ════════════════════════════════════════════════
+//  INTERACTIONS
+// ════════════════════════════════════════════════
+function toggleProblem(pid) {
+  const body = document.getElementById(`body-${pid}`);
+  const btn = document.getElementById(`btn-${pid}`);
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  btn.textContent = isOpen ? '+' : '−';
+}
+
+function showAnswer(pid) {
+  const el = document.getElementById(`ans-${pid}`);
+  const btn = document.getElementById(`toggle-${pid}`);
+  const isHidden = el.classList.contains('answer-hidden') || el.style.display === 'none' || el.style.display === '';
+  if (isHidden) {
+    el.classList.remove('answer-hidden');
+    el.style.display = 'block';
+    btn.textContent = '정답 닫기';
+  } else {
+    el.classList.add('answer-hidden');
+    el.style.display = 'none';
+    btn.textContent = '정답 보기';
+  }
+}
+
+function switchTab(pid, tab, el) {
+  document.querySelectorAll(`#ans-${pid} .sol-tab`).forEach(t => t.classList.remove('active'));
+  document.querySelectorAll(`#ans-${pid} .sol-panel`).forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(`tab-${tab}-${pid}`).classList.add('active');
+}
+
+function markSolved(pid, idx) {
+  if (solved.has(pid)) {
+    solved.delete(pid);
+  } else {
+    solved.add(pid);
+  }
+  saveSolved();
+  // Update num badge
+  const numEl = document.querySelector(`#card-${pid} .problem-num`);
+  if (numEl) {
+    if (solved.has(pid)) {
+      numEl.style.background = 'var(--green-bg)';
+      numEl.style.color = 'var(--green)';
+      numEl.style.borderColor = 'rgba(63,185,80,0.3)';
+      numEl.textContent = '✓';
+    } else {
+      numEl.style.background = '';
+      numEl.style.color = '';
+      numEl.style.borderColor = '';
+      numEl.textContent = idx + 1;
+    }
+  }
+}
+
+function copyCode(btn, id) {
+  const el = document.getElementById(id);
+  const text = el ? el.innerText : '';
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '복사됨!';
+    setTimeout(() => btn.textContent = '복사', 1500);
+  });
+}
+
+function setActive(el) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if (el) el.classList.add('active');
+}
+
+function filterNav() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.style.display = item.textContent.toLowerCase().includes(q) ? 'flex' : 'none';
+  });
+  document.querySelectorAll('.nav-section').forEach(sec => {
+    const visible = [...sec.querySelectorAll('.nav-item')].some(i => i.style.display !== 'none');
+    sec.style.display = visible ? '' : 'none';
+  });
+}
+
+// ════════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════════
+updateProgress();
+showHome(document.querySelector('.nav-item'));
+</script>
+</body>
+</html>
