@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>키오스크</title>
@@ -380,6 +380,85 @@
   }
   .back-btn svg { width: 20px; height: 20px; fill: #6b7db3; }
   .back-btn:active { color: #4f8ef7; }
+
+  /* ── 가로 모드 (iPhone 16 landscape: 852×393) ── */
+  @media (orientation: landscape) and (max-height: 500px) {
+    /* 공통 */
+    .screen-header { padding: 10px 20px; }
+    .back-btn { font-size: 15px; }
+
+    /* 메인 */
+    #screen-main .logo-area {
+      flex-direction: row;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+    #screen-main .icon { width: 66px; height: 66px; border-radius: 18px; }
+    #screen-main .icon svg { width: 36px; height: 36px; }
+    #screen-main h1 { font-size: 28px; }
+    #screen-main .subtitle { font-size: 13px; margin-top: 0; }
+    .touch-prompt { flex-direction: row; gap: 14px; }
+    .touch-prompt .ring { width: 52px; height: 52px; }
+    .touch-prompt span { font-size: 16px; letter-spacing: 0; }
+
+    /* 생년월일 – 좌(입력)·우(키패드) 2컬럼 */
+    #screen-birth {
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      padding-left: max(20px, env(safe-area-inset-left));
+      padding-right: max(20px, env(safe-area-inset-right));
+    }
+    .birth-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .birth-header { margin-bottom: 18px; }
+    .birth-header h2 { font-size: 20px; }
+    .birth-header p { font-size: 13px; }
+    .birth-display { gap: 6px; margin-bottom: 10px; }
+    .digit-box { width: 44px; height: 54px; font-size: 24px; border-radius: 10px; }
+    .hint-text { font-size: 12px; margin-bottom: 6px; }
+    .birth-error { font-size: 12px; margin-bottom: 0; min-height: 18px; }
+
+    .keypad { width: 240px; gap: 7px; }
+    .key { height: 50px; font-size: 20px; border-radius: 12px; }
+    .key.key-confirm { height: 44px; font-size: 14px; margin-top: 2px; }
+
+    /* 카드 – 좌(아이콘+텍스트)·우(슬롯+타이머) 2컬럼 */
+    .card-content {
+      flex-direction: row;
+      gap: 48px;
+      text-align: left;
+      padding-left: max(20px, env(safe-area-inset-left));
+      padding-right: max(20px, env(safe-area-inset-right));
+    }
+    .card-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .card-side {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    .card-icon { width: 80px; height: 80px; border-radius: 18px; }
+    .card-icon::before { top: 12px; left: 10px; width: 24px; height: 18px; }
+    .card-icon svg { width: 44px; height: 44px; }
+    .card-title { font-size: 22px; text-align: left; }
+    .card-subtitle { font-size: 14px; text-align: left; }
+    .card-slot { width: 200px; }
+    .timer-ring { width: 66px; height: 66px; }
+    .timer-ring svg { width: 66px; height: 66px; }
+    .timer-num { font-size: 20px; }
+    .timer-label { font-size: 12px; }
+  }
 </style>
 </head>
 <body>
@@ -407,22 +486,24 @@
     </div>
   </div>
 
-  <div class="birth-header">
-    <h2>생년월일을 입력해주세요</h2>
-    <p>주민등록상 생년월일 6자리를 입력하세요</p>
-  </div>
+  <div class="birth-left">
+    <div class="birth-header">
+      <h2>생년월일을 입력해주세요</h2>
+      <p>주민등록상 생년월일 6자리를 입력하세요</p>
+    </div>
 
-  <div class="birth-display" id="birth-display">
-    <div class="digit-box cursor" id="d0"></div>
-    <div class="digit-box" id="d1"></div>
-    <div class="digit-box" id="d2"></div>
-    <div class="digit-box" id="d3"></div>
-    <div class="digit-box" id="d4"></div>
-    <div class="digit-box" id="d5"></div>
-  </div>
+    <div class="birth-display" id="birth-display">
+      <div class="digit-box cursor" id="d0"></div>
+      <div class="digit-box" id="d1"></div>
+      <div class="digit-box" id="d2"></div>
+      <div class="digit-box" id="d3"></div>
+      <div class="digit-box" id="d4"></div>
+      <div class="digit-box" id="d5"></div>
+    </div>
 
-  <p class="hint-text">예) 1990년 3월 15일 → 900315</p>
-  <p class="birth-error" id="birth-error"></p>
+    <p class="hint-text">예) 1990년 3월 15일 → 900315</p>
+    <p class="birth-error" id="birth-error"></p>
+  </div>
 
   <div class="keypad">
     <div class="key" onclick="pressKey('1')">1</div>
@@ -453,24 +534,27 @@
   </div>
 
   <div class="card-content">
-    <div class="card-icon">
-      <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
-    </div>
-    <div class="card-title" id="card-title">카드를 넣어주세요</div>
-    <div class="card-subtitle">카드를 단말기에 삽입하거나<br>카드를 가까이 대주세요</div>
-    <div class="card-slot"><div class="card-slot-bar"></div></div>
-
-    <div class="timer-wrap">
-      <div class="timer-ring">
-        <svg viewBox="0 0 80 80">
-          <circle class="track" cx="40" cy="40" r="35"/>
-          <circle class="progress" id="timer-circle" cx="40" cy="40" r="35"
-            stroke-dasharray="220"
-            stroke-dashoffset="0"/>
-        </svg>
-        <div class="timer-num" id="timer-num">30</div>
+    <div class="card-info">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
       </div>
-      <div class="timer-label">초 후 처음으로 돌아갑니다</div>
+      <div class="card-title" id="card-title">카드를 넣어주세요</div>
+      <div class="card-subtitle">카드를 단말기에 삽입하거나<br>카드를 가까이 대주세요</div>
+    </div>
+    <div class="card-side">
+      <div class="card-slot"><div class="card-slot-bar"></div></div>
+      <div class="timer-wrap">
+        <div class="timer-ring">
+          <svg viewBox="0 0 80 80">
+            <circle class="track" cx="40" cy="40" r="35"/>
+            <circle class="progress" id="timer-circle" cx="40" cy="40" r="35"
+              stroke-dasharray="220"
+              stroke-dashoffset="0"/>
+          </svg>
+          <div class="timer-num" id="timer-num">30</div>
+        </div>
+        <div class="timer-label">초 후 처음으로 돌아갑니다</div>
+      </div>
     </div>
   </div>
 </div>
