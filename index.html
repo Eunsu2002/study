@@ -3696,7 +3696,7 @@ System.out.println(<span class="str">"크리스마스까지 D-"</span> + days);`
     title: 'IO / NIO / Files / Paths',
     level: 'Advanced',
     badgeClass: 'badge-advanced',
-    keywords: ['Files', 'Paths', 'BufferedReader', 'NIO', 'Stream'],
+    keywords: ['Files', 'Paths', 'BufferedReader', 'NIO', 'Stream', 'FileReader', 'FileWriter', 'Serializable'],
     problems: [
       {
         title: '파일 전체 읽기 (NIO)',
@@ -3736,10 +3736,10 @@ List&lt;String&gt; lines = Files.<span class="fn">readAllLines</span>(Path.<span
         answer: `<span class="kw">import</span> java.nio.file.*;
 
 <span class="cm">// 새로 쓰기 (기존 내용 덮어씀)</span>
-Files.<span class="fn">writeString</span>(Path.<span class="fn">of</span>(<span class="str">"out.txt"</span>), <span class="str">"안녕하세요\n"</span>);
+Files.<span class="fn">writeString</span>(Path.<span class="fn">of</span>(<span class="str">"out.txt"</span>), <span class="str">"안녕하세요\\n"</span>);
 
 <span class="cm">// 기존 파일에 추가</span>
-Files.<span class="fn">writeString</span>(Path.<span class="fn">of</span>(<span class="str">"out.txt"</span>), <span class="str">"한 줄 더\n"</span>,
+Files.<span class="fn">writeString</span>(Path.<span class="fn">of</span>(<span class="str">"out.txt"</span>), <span class="str">"한 줄 더\\n"</span>,
     StandardOpenOption.APPEND);
 
 <span class="cm">// 여러 줄 쓰기</span>
@@ -3840,6 +3840,181 @@ Files.<span class="fn">deleteIfExists</span>(Path.<span class="fn">of</span>(<sp
   <li><code>exists()</code>, <code>isDirectory()</code>: 존재/종류 확인</li>
   <li><code>list()</code>: 폴더 내용을 Stream으로 (재귀 탐색은 <code>walk()</code>)</li>
   <li><code>deleteIfExists()</code>: 있으면 삭제 (없어도 예외 안 남)</li>
+</ul>`
+      },
+      {
+        title: 'FileReader / FileWriter (문자 스트림 기초)',
+        tags: ['FileReader', 'FileWriter', 'Character Stream'],
+        desc: '전통적인 java.io 문자 스트림으로 텍스트 파일을 쓰고, 한 글자씩 읽으세요. 추가(append) 모드도 사용해 보세요.',
+        code: `<span class="cm">// FileWriter로 쓰고 FileReader로 한 글자씩 읽기</span>`,
+        answer: `<span class="kw">import</span> java.io.*;
+
+<span class="cm">// 쓰기 (기존 내용 덮어씀)</span>
+<span class="kw">try</span> (FileWriter fw = <span class="kw">new</span> FileWriter(<span class="str">"memo.txt"</span>)) {
+    fw.<span class="fn">write</span>(<span class="str">"Hello, Java IO\\n"</span>);
+    fw.<span class="fn">write</span>(<span class="str">"두 번째 줄\\n"</span>);
+}
+
+<span class="cm">// 읽기: read()는 한 글자씩, 끝(EOF)이면 -1</span>
+<span class="kw">try</span> (FileReader fr = <span class="kw">new</span> FileReader(<span class="str">"memo.txt"</span>)) {
+    <span class="kw">int</span> ch;
+    <span class="kw">while</span> ((ch = fr.<span class="fn">read</span>()) != <span class="op">-</span><span class="num">1</span>) {
+        System.out.print((<span class="kw">char</span>) ch);
+    }
+}
+
+<span class="cm">// 추가 모드: 두 번째 인자 true</span>
+<span class="kw">try</span> (FileWriter fw = <span class="kw">new</span> FileWriter(<span class="str">"memo.txt"</span>, <span class="kw">true</span>)) {
+    fw.<span class="fn">write</span>(<span class="str">"끝에 추가\\n"</span>);
+}`,
+        output: 'Hello, Java IO / 두 번째 줄 (한 글자씩 출력)',
+        explain: `<h4>FileReader / FileWriter</h4>
+<ul>
+  <li>텍스트 전용 <strong>문자 스트림</strong> (Reader/Writer 계열) — 문자 인코딩을 알아서 처리</li>
+  <li><code>read()</code>는 <code>int</code> 반환 → 파일 끝이면 <code>-1</code>, 아니면 <code>(char)</code>로 캐스팅</li>
+  <li><code>new FileWriter(경로, true)</code>: append 모드 (덮어쓰지 않고 끝에 추가)</li>
+  <li>한 글자씩 읽기는 느림 → 실전에선 <code>BufferedReader</code>/<code>BufferedWriter</code>로 감싸서 사용</li>
+</ul>`
+      },
+      {
+        title: 'BufferedWriter / PrintWriter로 쓰기',
+        tags: ['BufferedWriter', 'PrintWriter', 'newLine'],
+        desc: '<code>BufferedWriter</code>로 버퍼링하며 쓰고, <code>PrintWriter</code>의 println/printf로 편하게 출력하세요.',
+        code: `<span class="cm">// BufferedWriter와 PrintWriter 비교</span>`,
+        answer: `<span class="kw">import</span> java.io.*;
+
+<span class="cm">// BufferedWriter: 버퍼링 + newLine()</span>
+<span class="kw">try</span> (BufferedWriter bw = <span class="kw">new</span> BufferedWriter(
+        <span class="kw">new</span> FileWriter(<span class="str">"log.txt"</span>))) {
+    bw.<span class="fn">write</span>(<span class="str">"첫 줄"</span>);
+    bw.<span class="fn">newLine</span>();  <span class="cm">// OS에 맞는 줄바꿈</span>
+    bw.<span class="fn">write</span>(<span class="str">"둘째 줄"</span>);
+}
+
+<span class="cm">// PrintWriter: println / printf 지원 → 편의성 최고</span>
+<span class="kw">try</span> (PrintWriter pw = <span class="kw">new</span> PrintWriter(
+        <span class="kw">new</span> FileWriter(<span class="str">"report.txt"</span>))) {
+    pw.<span class="fn">println</span>(<span class="str">"이름: 홍길동"</span>);
+    pw.<span class="fn">printf</span>(<span class="str">"점수: %d점%n"</span>, <span class="num">95</span>);
+}`,
+        output: 'log.txt, report.txt 파일 생성됨',
+        explain: `<h4>보조(필터) 스트림</h4>
+<ul>
+  <li><code>BufferedWriter</code>: 버퍼에 모았다가 한 번에 출력 → 성능↑, <code>newLine()</code> 제공</li>
+  <li><code>PrintWriter</code>: <code>print/println/printf</code> 제공 — <code>System.out</code>과 같은 감각으로 파일 출력</li>
+  <li>close() 시 버퍼가 자동 flush → try-with-resources 필수</li>
+  <li>기반 스트림(FileWriter)을 감싸서 기능을 추가하는 <strong>데코레이터 패턴</strong></li>
+</ul>`
+      },
+      {
+        title: 'DataStream으로 기본형 저장',
+        tags: ['DataOutputStream', 'DataInputStream', 'binary'],
+        desc: 'int, double, String 값을 바이너리 그대로 파일에 저장하고, 다시 읽어 복원하세요.',
+        code: `<span class="cm">// 기본형 데이터를 바이너리로 저장/복원</span>`,
+        answer: `<span class="kw">import</span> java.io.*;
+
+<span class="cm">// 쓰기</span>
+<span class="kw">try</span> (DataOutputStream out = <span class="kw">new</span> DataOutputStream(
+        <span class="kw">new</span> FileOutputStream(<span class="str">"data.bin"</span>))) {
+    out.<span class="fn">writeInt</span>(<span class="num">2026</span>);
+    out.<span class="fn">writeDouble</span>(<span class="num">3.14</span>);
+    out.<span class="fn">writeUTF</span>(<span class="str">"자바"</span>);
+}
+
+<span class="cm">// 읽기 — 반드시 쓴 순서·타입 그대로!</span>
+<span class="kw">try</span> (DataInputStream in = <span class="kw">new</span> DataInputStream(
+        <span class="kw">new</span> FileInputStream(<span class="str">"data.bin"</span>))) {
+    <span class="kw">int</span> year = in.<span class="fn">readInt</span>();      <span class="cm">// 2026</span>
+    <span class="kw">double</span> pi = in.<span class="fn">readDouble</span>();  <span class="cm">// 3.14</span>
+    String s = in.<span class="fn">readUTF</span>();       <span class="cm">// "자바"</span>
+}`,
+        output: '2026 / 3.14 / 자바 복원됨',
+        explain: `<h4>DataInputStream / DataOutputStream</h4>
+<ul>
+  <li>기본형(int, double…)과 문자열을 <strong>바이트 그대로</strong> 저장 — 텍스트 파일이 아님</li>
+  <li><code>writeUTF()</code> / <code>readUTF()</code>: 문자열 저장/복원</li>
+  <li>읽을 때는 <strong>쓴 순서와 타입을 정확히 맞춰야</strong> 함 (어기면 값이 깨짐)</li>
+  <li>Byte Stream(<code>FileInputStream</code>)을 감싸는 보조 스트림</li>
+</ul>`
+      },
+      {
+        title: '객체 직렬화 (Serializable)',
+        tags: ['ObjectOutputStream', 'Serializable', 'transient'],
+        desc: '<code>Member</code> 객체를 파일에 통째로 저장(직렬화)하고 복원(역직렬화)하세요. 비밀번호는 저장에서 제외하세요.',
+        code: `<span class="kw">class</span> <span class="cl">Member</span> <span class="kw">implements</span> ??? {
+    String name;
+    String password;  <span class="cm">// 저장에서 제외하려면?</span>
+}`,
+        answer: `<span class="kw">import</span> java.io.*;
+
+<span class="kw">class</span> <span class="cl">Member</span> <span class="kw">implements</span> Serializable {
+    <span class="kw">private static final long</span> serialVersionUID = <span class="num">1L</span>;
+    String name;
+    <span class="kw">transient</span> String password;  <span class="cm">// 직렬화 제외</span>
+
+    <span class="fn">Member</span>(String name, String password) {
+        <span class="kw">this</span>.name = name;
+        <span class="kw">this</span>.password = password;
+    }
+}
+
+<span class="cm">// 직렬화: 객체 → 파일</span>
+<span class="kw">try</span> (ObjectOutputStream out = <span class="kw">new</span> ObjectOutputStream(
+        <span class="kw">new</span> FileOutputStream(<span class="str">"member.ser"</span>))) {
+    out.<span class="fn">writeObject</span>(<span class="kw">new</span> Member(<span class="str">"홍길동"</span>, <span class="str">"1234"</span>));
+}
+
+<span class="cm">// 역직렬화: 파일 → 객체</span>
+<span class="kw">try</span> (ObjectInputStream in = <span class="kw">new</span> ObjectInputStream(
+        <span class="kw">new</span> FileInputStream(<span class="str">"member.ser"</span>))) {
+    Member m = (Member) in.<span class="fn">readObject</span>();
+    System.out.println(m.name);      <span class="cm">// 홍길동</span>
+    System.out.println(m.password);  <span class="cm">// null (transient)</span>
+}`,
+        output: '홍길동 / null (transient 필드는 복원 안 됨)',
+        explain: `<h4>직렬화 (Serialization)</h4>
+<ul>
+  <li><code>Serializable</code>: 메서드 없는 <strong>마커 인터페이스</strong> — 구현해야 직렬화 가능</li>
+  <li><code>transient</code>: 직렬화 제외 필드 (비밀번호 등 민감 정보) → 복원 시 기본값(null, 0)</li>
+  <li><code>serialVersionUID</code>: 클래스 버전 번호 — 명시 안 하면 클래스 수정 시 <code>InvalidClassException</code> 위험</li>
+  <li><code>readObject()</code>는 Object 반환 → 캐스팅 필요 + <code>ClassNotFoundException</code> 처리</li>
+</ul>`
+      },
+      {
+        title: 'Path 경로 다루기',
+        tags: ['Path', 'resolve', 'normalize'],
+        desc: '경로를 조합(resolve), 정리(normalize), 분해(getFileName/getParent)하고 상대 경로를 계산하세요.',
+        code: `<span class="cm">// Path 조합 / 정리 / 분해</span>`,
+        answer: `<span class="kw">import</span> java.nio.file.*;
+
+<span class="cm">// 경로 조합 — 문자열 + 연결보다 안전</span>
+Path dir = Path.<span class="fn">of</span>(<span class="str">"data/logs"</span>);
+Path file = dir.<span class="fn">resolve</span>(<span class="str">"app.log"</span>);   <span class="cm">// data/logs/app.log</span>
+
+<span class="cm">// . 과 .. 정리</span>
+Path messy = Path.<span class="fn">of</span>(<span class="str">"data/./logs/../config.txt"</span>);
+Path clean = messy.<span class="fn">normalize</span>();        <span class="cm">// data/config.txt</span>
+
+<span class="cm">// 경로 분해</span>
+Path p = Path.<span class="fn">of</span>(<span class="str">"/home/user/docs/report.pdf"</span>);
+p.<span class="fn">getFileName</span>();   <span class="cm">// report.pdf</span>
+p.<span class="fn">getParent</span>();     <span class="cm">// /home/user/docs</span>
+
+<span class="cm">// 상대 경로 계산</span>
+Path a = Path.<span class="fn">of</span>(<span class="str">"/home/user"</span>);
+Path b = Path.<span class="fn">of</span>(<span class="str">"/home/user/docs/report.pdf"</span>);
+a.<span class="fn">relativize</span>(b);    <span class="cm">// docs/report.pdf</span>
+
+<span class="cm">// 절대 경로로 변환</span>
+Path abs = Path.<span class="fn">of</span>(<span class="str">"data.txt"</span>).<span class="fn">toAbsolutePath</span>();`,
+        output: 'data/logs/app.log, data/config.txt, docs/report.pdf …',
+        explain: `<h4>Path 메서드</h4>
+<ul>
+  <li><code>resolve()</code>: 경로 합치기 — OS별 구분자(/, \\)를 알아서 처리</li>
+  <li><code>normalize()</code>: <code>.</code>(현재), <code>..</code>(상위) 정리</li>
+  <li><code>getFileName()</code> / <code>getParent()</code> / <code>getRoot()</code>: 경로 분해</li>
+  <li><code>relativize()</code>: 한 경로에서 다른 경로로 가는 상대 경로</li>
+  <li><code>Paths.get()</code>은 예전 방식 — Java 11+는 <code>Path.of()</code> 권장</li>
 </ul>`
       }
     ]
